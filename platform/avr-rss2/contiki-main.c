@@ -536,7 +536,6 @@ main(void)
           }
         }
         PRINTF("\nNeighbors [%u max]\n", NBR_TABLE_MAX_NEIGHBORS);
-
 	j = 0;
         for(nbr = nbr_table_head(ds6_neighbors);
             nbr != NULL;
@@ -545,14 +544,13 @@ main(void)
           PRINTF("\n");
 	  j++;
         }
-        if(j) {
+        if(!j) {
           PRINTF("  <none>");
         }
         PRINTF("\nRoutes [%u max]\n", UIP_DS6_ROUTE_NB);
         {
           uip_ds6_route_t *r;
-          PRINTF("\nRoutes [%u max]\n", UIP_DS6_ROUTE_NB);
-          j = 1;
+          j = 0;
           for(r = uip_ds6_route_head();
               r != NULL;
               r = uip_ds6_route_next(r)) {
@@ -560,10 +558,10 @@ main(void)
             PRINTF("/%u (via ", r->length);
             ipaddr_add(uip_ds6_route_nexthop(r));
             PRINTF(") %lus\n", r->state.lifetime);
-            j = 0;
+            j++;
           }
         }
-        if(j) {
+        if(!j) {
           PRINTF("  <none>");
         }
         PRINTF("\n---------\n");
