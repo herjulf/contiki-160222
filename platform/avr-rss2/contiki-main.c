@@ -122,11 +122,6 @@ rtimercycle(void)
 
 uint16_t ledtimer_red, ledtimer_yellow;
 
-void
-newline(void)
-{
-  printf("\n");
-}
 /*-------------------------------------------------------------------------*/
 /*----------------------Configuration of the .elf file---------------------*/
 #if 1
@@ -273,7 +268,7 @@ initialize(void)
 
   printf("I2C: ");
   i2c_probe();
-  newline();
+  printf("\n");  
 
   i2c_at24mac_read((char *)&addr.u8, 1, 0);
   linkaddr_set_node_addr(&addr);
