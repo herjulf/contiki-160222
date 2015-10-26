@@ -45,6 +45,7 @@ TARGET
 -------
 make TARGET=avr-rss2
 
+(Not supported: make TARGET=avr-rss2 MCU=atmega128rfa1  BOOTLOADER_START=0x1F800)
 
 Flashing board
 ---------------
