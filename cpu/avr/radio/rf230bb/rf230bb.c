@@ -431,7 +431,13 @@ rf230_waitidle(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
+/* Set reduced power consumption for AtMegaXXXRFR2 MCU's. See AT02594 */
+
+uint8_t rf230_rpc_write(uint8_t data)
+{
+  hal_subregister_write(SR_TRX_RPC, data);    
+}
+
 /** \brief  This function will change the current state of the radio
  *          transceiver's internal state machine.
  *
@@ -505,6 +511,10 @@ radio_set_trx_state(uint8_t new_state)
         /* When the PLL is active most states can be reached in 1us. However, from */
         /* TRX_OFF the PLL needs time to activate. */
         if (current_state == TRX_OFF){
+
+#if  defined(__AVR_ATmega256RFR2__)  
+	  rf230_rpc_write(0xFF); /* Enable all RPC features */
+#endif
             delay_us(TIME_TRX_OFF_TO_PLL_ACTIVE);
         } else {
             delay_us(TIME_STATE_TRANSITION_PLL_ACTIVE);
