@@ -157,10 +157,10 @@ void
 i2c_at24mac_read(char *buf, uint8_t eui64, uint8_t sn)
 {
   if(eui64) {
-    i2c_read_mem(I2C_AT24MAC_ADDR, 0x98, buf, 8);
+    i2c_read_mem(I2C_AT24MAC_ADDR, 0x98, (uint8_t *) buf, 8);
   }
   if(sn) {
-    i2c_read_mem(I2C_AT24MAC_ADDR, 0x80, buf, 8);
+    i2c_read_mem(I2C_AT24MAC_ADDR, 0x80, (uint8_t *) buf, 8);
   }
 }
 void

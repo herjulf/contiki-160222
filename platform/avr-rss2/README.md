@@ -15,7 +15,7 @@ command line and perform basic admin tasks on UNIX family OSs.
 Boards Features
 ===============
 Chip Antenna. Robust radio performance.
-On EUI64 address chip combined with EEPROM
+Unique EUI64 address via chip combined with EEPROM
 Temp sensor DS18B20, Light Sensor.32 kHz RTC xtal
 Comparator. Preprogammed bootloader. 6-pin TTL-USB 
 header for FTDI cable for UART.
@@ -37,13 +37,23 @@ The platform has the following key features:
 
 Toolchain needs
 ===============
+The Atmel toolcahin is available in most operating system. For OS with
+Debian package handler.
+
+sudo apt-get install gcc-avr
+sudo apt-get install avrdude
+
+Check Atmels web-site. You migh also Consider Instant Contiki
 
 
-Hello-World Example
-====================
 
+TARGET
+=======
 make TARGET=avr-rss2
 
+
+FLASHING FIRWWARE
+=================
 Programming using avrdude using serial bootloader. (TTL-USB cable)
 Press the RESET button. The bootloader with wait for boot commands 
 for 3 seconds.
@@ -55,25 +65,45 @@ avrdude -p m256rfr2 -c stk500v2 -P /dev/ttyUSB0 -b 38400 -e -U flash:w:hello-wor
 Older boards may use the avr109 boot loader. The stk500v2 uses the yellow
 lED while the avr109 uses the red LED.
 
-Seend from the terminal program:
-
-*******Booting Contiki-3.x-1584-g4edfb36*******
-I2C: AT24MAC
-EUI-64 MAC: fc-c2-3d-0-0-1-82-1c
-nullmac sicslowmac, channel 26 , check rate 128 Hz tx power 0
-RPL Enabled
-Routing Enabled
-Hello, world
-Online
-
-Addresses [4 max]
-fe80::fec2:3d00:1:821c
-
-Neighbors [20 max]
-
-Routes [20 max]
+TESTED APPLICATORS & EXAMPLES
+=============================
+hello-world
+ipv6/rpl-udp
 
 
 Vendor info
 ===========
 http://radio-sensors.com/
+
+Maintainer
+==========
+Robert Olsson <robert@radio-sensors.com>
+
+
+Approvals
+=========
+Summary: R&TTE 73/23/EEC, 89/336/EEC and 99/5/EC
+Safety: EN 60950-1:2006 + A12: 2011
+RF: ETSI EN 300 328 V1.7.1 (2006-10)
+EMC: ETSI EN 301 489-1 V1.9.2 (2011-09), ETSI EN 301 489-17 V2.2.1 (2012-09)
+EMF: EN 62479:2010
+Human exposure to electromagnetic fields: EN 62479:2010 
+
+
+Commercial availability
+------------------------
+Through vendor and though resellers. Note board is will only available 
+were CE approval is covered. This may be further restricted by WEEE.
+Contact vendor. For research legislation is more relaxed in most 
+countries.
+
+
+References
+----------
+AtMega256RFR2 chip documentaion. Available via Atmel.
+Schematics and boards description. Available via Radio-Senors
+Smart Reduced Power Consumption Techniques. AT02594. Available via Atmel.
+
+ToDo
+====
+API for radio power saving settings introduced AT02594. 
