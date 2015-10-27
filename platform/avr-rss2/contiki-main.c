@@ -435,7 +435,7 @@ main(void)
     watchdog_periodic();
 
     /* Turn off LED's */
-    if(ledtimer_red) {
+    if(ledtimer_red ) {
       if(--ledtimer_red == 0) {
         leds_off(LEDS_RED);
       }
@@ -445,6 +445,8 @@ main(void)
         leds_off(LEDS_YELLOW);
       }
     }
+    leds_off(LEDS_RED);
+    leds_off(LEDS_YELLOW);
 
 #if 0
 /* Various entry points for debugging in the AVR Studio simulator.

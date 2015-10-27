@@ -49,7 +49,6 @@ const struct sensors_sensor temp_mcu_sensor;
 static int
 value(int type)
 {
-
  uint16_t v;
  
  ADCSRB |= (1<<MUX5);   //this bit buffered till ADMUX written to!
@@ -75,7 +74,7 @@ value(int type)
  /* Disable the ADC to save power */
  ADCSRA &= ~_BV(ADEN);
  //ADMUX = 0;                //turn off internal vref      
- return (int) ((double) v * 11.3 - 272.8);
+ return (int) ((double) (v * 1.13 - 272.8)*10);
 }
 
 static int
