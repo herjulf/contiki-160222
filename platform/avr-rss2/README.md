@@ -3,8 +3,8 @@ Getting Started with Contiki for avr-rss2
 This guide's aim is to help you start using Contiki for RSS2 boards
 The platform supports two different RSS2 boards:
 
-* Boards based on the AtMega128RFA1
 * Boards based on the AtMega256RFR2
+* Boards based on the AtMega128RFA1 (Under consideration)
 
 Boards looks the same. "Made in EU" labeled on the AtMega256RFR2 boards
 The platform and CPU code, are common for both boards, can be found under 
@@ -65,7 +65,7 @@ Tested applications and examples
 hello-world
 ipv6/rpl-udp
 ipv6/simple-udp-rpl
-rime (except for rudlph examples)
+rime
 
 Vendor info
 -----------
@@ -99,7 +99,6 @@ Smart Reduced Power Consumption Techniques. AT02594. Available via Atmel.
 
 ToDo
 -----
-File system support.
 Shell and UART input.
 API for radio power saving settings introduced Atmels app note AT02594. 
 Temp. sensor.
