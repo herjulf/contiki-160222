@@ -184,6 +184,11 @@ initialize(void)
   rs232_init(RS232_PORT_0, USART_BAUD_38400, USART_PARITY_NONE | USART_STOP_BITS_1 | USART_DATA_BITS_8);
   rs232_redirect_stdout(RS232_PORT_0);
 
+  /* Do it my way... */
+  UBRR0L = 25;
+  UBRR0H = 0;
+  UCSR0A = (1<<U2X0);  /*Double */
+
   clock_init();
 
   if(MCUSR & (1 << PORF)) {
