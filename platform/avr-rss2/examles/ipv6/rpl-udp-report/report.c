@@ -110,7 +110,7 @@ send_packet(void *ptr)
   len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", get_t_mcu());
   len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", get_light());
 
-  PRINTF("Report %d to %d %s\n",
+  PRINTF("Report TX %d to %d %s\n",
          server_ipaddr.u8[sizeof(server_ipaddr.u8) - 1], seq_id, buf);
 
   leds_on(LEDS_YELLOW);
