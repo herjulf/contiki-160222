@@ -3,8 +3,8 @@ Getting Started with Contiki for avr-rss2
 This guide's aim is to help you start using Contiki for RSS2 boards
 The platform supports two different RSS2 boards:
 
-* Boards based on the AtMega256RFR2
-* Boards based on the AtMega128RFA1 (Under consideration)
+* MCU based on the AtMega256RFR2
+* MCU based on the AtMega128RFA1 
 
 Boards looks the same. "Made in EU" labeled on the AtMega256RFR2 boards
 The platform and CPU code, are common for both boards, can be found under 
@@ -17,8 +17,9 @@ Boards Features
 Chip Antenna. Robust radio performance.
 Unique EUI64 address via chip combined with EEPROM
 Temp sensor DS18B20, Light Sensor.32 kHz RTC xtal
-Comparator. Preprogammed bootloader. 6-pin TTL-USB 
-header for FTDI cable for UART.
+Comparator chip and input. Preprogammed bootloader. 
+6-pin TTL-USB header for FTDI cable for UART. P-FET 
+(relay) for power on/off of sensors.
 CE certified by test institute.
 
 UART 
@@ -41,20 +42,20 @@ sudo apt-get install gcc-avr
 sudo apt-get install avrdude
 Also check Atmels web-site. You might also consider Instant Contiki
 
-TARGET
--------
+Contiki build TARGET
+--------------------
 make TARGET=avr-rss2
 
-(Not supported: make TARGET=avr-rss2 MCU=atmega128rfa1  BOOTLOADER_START=0x1F800)
+For AtMega128RFA1 boards:
+make TARGET=avr-rss2 MCU=atmega128rfa1  BOOTLOADER_START=0x1F800
 
-Flashing board
----------------
+Flashing
+--------
 Programming using avrdude using serial bootloader. (TTL-USB cable)
 Press the RESET button. The bootloader with wait for boot commands 
 for 3 seconds.
 
-Commnad line example.
-
+Flasing commnad line example:
 avrdude -p m256rfr2 -c stk500v2 -P /dev/ttyUSB0 -b 38400 -e -U flash:w:hello-world.avr-rss2 
 
 Older boards may use the avr109 boot loader. The stk500v2 uses the yellow
@@ -66,14 +67,11 @@ hello-world
 ipv6/rpl-udp
 ipv6/simple-udp-rpl
 rime
+ipv6/multicast
 
-Vendor info
------------
-http://radio-sensors.com/
-
-Maintainer
-----------
-Robert Olsson <robert@radio-sensors.com>
+Platform utorial application
+----------------------------
+platform/avr-rss2/examles/ipv6/rpl-udp-report/
 
 Approvals
 ---------
@@ -101,4 +99,12 @@ ToDo
 -----
 Shell and UART input.
 API for radio power saving settings introduced Atmels app note AT02594. 
-Temp. sensor.
+Dallas DS18B20 Temp. sensors.
+
+Vendor info
+-----------
+http://radio-sensors.com/
+
+Maintainer
+----------
+Robert Olsson <robert@radio-sensors.com>
