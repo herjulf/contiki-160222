@@ -432,11 +432,12 @@ rf230_waitidle(void)
 }
 
 /* Set reduced power consumption for AtMegaXXXRFR2 MCU's. See AT02594 */
-
+#if  defined(__AVR_ATmega256RFR2__)  
 uint8_t rf230_rpc_write(uint8_t data)
 {
   hal_subregister_write(SR_TRX_RPC, data);    
 }
+#endif
 
 /** \brief  This function will change the current state of the radio
  *          transceiver's internal state machine.
