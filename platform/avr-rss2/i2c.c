@@ -45,6 +45,7 @@
 #include <compat/twi.h>
 #include <stdio.h>
 #include <string.h>
+#include "dev/co2_sa_kxx-sensor.h"
 
 void
 i2c_init(uint32_t speed)
@@ -178,5 +179,10 @@ i2c_probe(void)
   if(!i2c_start(I2C_SHT2X_ADDR)) {
     i2c_stop();
     print_delim(p++, "SHT2X", del);
+  }
+  watchdog_periodic();
+  if(!i2c_start(I2C_CO2SA_ADDR)) {
+    i2c_stop();
+    print_delim(p++, "CO2SA", del);
   }
 }

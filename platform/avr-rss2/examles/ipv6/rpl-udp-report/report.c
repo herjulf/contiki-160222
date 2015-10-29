@@ -38,6 +38,9 @@
 #include "dev/battery-sensor.h"
 #include "dev/temp_mcu-sensor.h"
 #include "dev/light-sensor.h"
+#ifdef CO2
+#include "dev/co2_sa_kxx-sensor.h"
+#endif
 #ifdef WITH_COMPOWER
 #include "powertrace.h"
 #endif
@@ -79,7 +82,13 @@ get_light(void)
 {
   return light_sensor.value(0);
 }
-
+#ifdef CO2
+static int
+get_co2_sa_kxx(int value)
+{
+  return co2_sa_kxx_sensor.value(value);
+}
+#endif
 /*---------------------------------------------------------------------------*/
 PROCESS(udp_client_process, "UDP client process");
 AUTOSTART_PROCESSES(&udp_client_process);
@@ -109,8 +118,10 @@ send_packet(void *ptr)
   len += snprintf((char *) &buf[len], sizeof(buf), "V_MCU=%-d ", get_v_mcu());
   len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", get_t_mcu());
   len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", get_light());
-
-  PRINTF("Report TX %d to %d %s\n",
+#ifdef CO2
+  len += snprintf((char *) &buf[len], sizeof(buf), "CO2=%-d ", get_co2_sa_kxx(CO2_SA_KXX_CO2));
+#endif
+  PRINTF("TX %d to %d %s\n",
          server_ipaddr.u8[sizeof(server_ipaddr.u8) - 1], seq_id, buf);
 
   leds_on(LEDS_YELLOW);
@@ -187,13 +198,18 @@ PROCESS_THREAD(udp_client_process, ev, data)
   SENSORS_ACTIVATE(battery_sensor);
   SENSORS_ACTIVATE(temp_mcu_sensor);
   SENSORS_ACTIVATE(light_sensor);
-
+#ifdef CO2
+  SENSORS_ACTIVATE(co2_sa_kxx_sensor);
+#endif
   set_global_address();
   leds_init();
 
   printf("V_MCU=%-d\n", get_v_mcu());
   printf("T_MCU=%-d\n", get_t_mcu());
   printf("LIGHT=%-d\n", get_light());
+#ifdef CO2
+  printf("CO2=%-d\n", get_co2_sa_kxx(CO2_SA_KXX_CO2));
+#endif
   PRINTF("UDP client process started\n");
 
   print_local_addresses();
