@@ -1,16 +1,18 @@
-Getting Started with Contiki for avr-rss2
-==========================================
+Getting Started with Contiki using avr-rss2
+===========================================
 This guide's aim is to help you start using Contiki for RSS2 boards
 The platform supports two different RSS2 boards:
 
-* MCU based on the AtMega256RFR2
-* MCU based on the AtMega128RFA1 
+* Based on MCU AtMega256RFR2
+* Based on MCU AtMega128RFA1 (bonus) 
 
 Boards looks the same. "Made in EU" labeled on the AtMega256RFR2 boards
 The platform and CPU code, are common for both boards, can be found under 
-`$(CONTIKI)/platfrom/avr-rssa The port was developed and tested with RSS2.
+`$(CONTIKI)/platfrom/avr-rssa. The port was developed and tested with RSS2.
 This guide assumes that you have basic understanding of how to use the 
-command line and perform basic admin tasks on UNIX family OSs.
+command line and perform basic admin tasks on UNIX family OSs. You should'
+also have understanding about the Contiki OS design as well have C 
+programming skills.
 
 Boards Features
 ----------------
@@ -25,13 +27,14 @@ CE certified by test institute.
 UART 
 ----
 The board has one UART via the 6-pin TTL-USB adapter, The recommended
-baudrate is 38400 bps. This gives lowest error with respect of the used 
-clock frequency.
+baudrate is 38400 bps. This speed gives the lowest error with respect 
+of the used clock frequency used internally.
 
 Port Features
 --------------
 The platform has the following key features:
-* Leds
+* Standard, E64 address from built-in chip.
+* First hooks for RPC (Reduced Power Consumption) for AtMegaXXXRFR2. 
 
 Toolchain needs
 ---------------
@@ -55,10 +58,10 @@ Programming using avrdude using serial bootloader. (TTL-USB cable)
 Press the RESET button. The bootloader with wait for boot commands 
 for 3 seconds.
 
-Flasing commnad line example:
+Flashing commnad line example:
 avrdude -p m256rfr2 -c stk500v2 -P /dev/ttyUSB0 -b 38400 -e -U flash:w:hello-world.avr-rss2 
 
-Older boards may use the avr109 boot loader. The stk500v2 uses the yellow
+Older boards may use the avr109 boot loader. The stk500v2 uses the yellow 
 lED while the avr109 uses the red LED.
 
 Tested applications and examples
@@ -69,9 +72,10 @@ ipv6/simple-udp-rpl
 rime
 ipv6/multicast
 
-Platform utorial application
-----------------------------
+Platform tutorial application
+.----------------------------
 platform/avr-rss2/examles/ipv6/rpl-udp-report/
+This example shows the sensd data encoding. But UDP using 6lowpan.
 
 Approvals
 ---------
@@ -99,7 +103,7 @@ ToDo
 -----
 Shell and UART input.
 API for radio power saving settings introduced Atmels app note AT02594. 
-Dallas DS18B20 Temp. sensors.
+Also function for the desensitizing RPC resister.
 
 Vendor info
 -----------
