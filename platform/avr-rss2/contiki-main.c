@@ -28,7 +28,10 @@
  *
  * This file is part of the Contiki operating system.
  *
+ * Reworked for avr-rss2 platform.  Robert Olsson <robert@radio-sensors.com>
  */
+
+
 #define PRINTF(FORMAT, args ...) printf_P(PSTR(FORMAT),##args)
 
 #define ANNOUNCE_BOOT 1    /* adds about 600 bytes to program size */

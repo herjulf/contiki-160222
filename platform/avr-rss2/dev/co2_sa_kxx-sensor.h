@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Copyright Robert Olsson 
+ * Copyright (c) 2015, Copyright Markus Hidell, Robert Olsson
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * This file is part of the Contiki operating system.
  *
  *
- * Author  : Robert Olsson
+ * Authors  : Markus Hidell, Robert Olsson  {mahidell, roolss} @kth.se 
  * Created : 2015-10-27
  * Updated : $Date: 2010/01/14 20:23:02 $
  *           $Revision: 1.2 $
