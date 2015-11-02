@@ -281,7 +281,7 @@ initialize(void)
   i2c_probe();
   printf("\n");  
 
-  i2c_at24mac_read((char *)&addr.u8, 1, 0);
+  i2c_at24mac_read((char *)&addr.u8, 1);
   linkaddr_set_node_addr(&addr);
   /* memcpy(&uip_lladdr.addr, &addr.u8, sizeof(linkaddr_t)); */
 

@@ -155,15 +155,17 @@ i2c_read_mem(uint8_t addr, uint8_t reg, uint8_t buf[], uint8_t bytes)
   i2c_stop();
 }
 void
-i2c_at24mac_read(char *buf, uint8_t eui64, uint8_t sn)
+i2c_at24mac_read(char *buf, uint8_t eui64)
 {
   if(eui64) {
     i2c_read_mem(I2C_AT24MAC_ADDR, 0x98, (uint8_t *) buf, 8);
   }
-  if(sn) {
-    i2c_read_mem(I2C_AT24MAC_ADDR, 0x80, (uint8_t *) buf, 8);
+  /* 128bit unique serial number */
+  else {
+    i2c_read_mem(I2C_AT24MAC_ADDR, 0x80, (uint8_t *) buf, 16);
   }
 }
+
 void
 i2c_probe(void)
 {

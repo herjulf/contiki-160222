@@ -41,6 +41,7 @@
 
 #include <stdio.h>
 #include "adc.h"
+#include "i2c.h"
 #include "dev/leds.h"
 #include "dev/battery-sensor.h"
 #include "dev/temp_mcu-sensor.h"
@@ -79,6 +80,9 @@ get_co2_sa_kxx(int value)
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(hello_sensors_process, ev, data)
 {
+  char serial[16];
+  int i;
+
   PROCESS_BEGIN();
 
   SENSORS_ACTIVATE(battery_sensor);
@@ -88,13 +92,19 @@ PROCESS_THREAD(hello_sensors_process, ev, data)
   SENSORS_ACTIVATE(co2_sa_kxx_sensor);
 #endif
 
-  leds_init();
-
-  printf("Reading sensors---------\n");
-
+  leds_init(); 
   leds_on(LEDS_RED);
   leds_on(LEDS_YELLOW);
+ 
+  /* Read out mote unique 128 bit ID */
+  i2c_at24mac_read(&serial, 0);
+ 
+  printf("Reading sensors---------\n");
 
+  printf("sn=");
+  for(i=0; i < 15; i++)
+    printf("%02x", serial[i]);
+  printf("%02x\n", serial[15]);
   printf("V_MCU=%-3.1f\n", ((double) get_v_mcu())/1000);
   printf("V_IN=%-4.2f\n", adc_read_v_in());
   printf("V_AD1=%-4.2f\n", adc_read_a1());
