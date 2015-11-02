@@ -71,6 +71,7 @@ ipv6/rpl-udp
 ipv6/simple-udp-rpl
 rime
 ipv6/multicast
+example-shell (needs symbol.c to be added to project)
 
 Platform tutorial application
 .----------------------------
