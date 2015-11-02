@@ -10,6 +10,7 @@
 #include "rss2.h"
 #include "contiki.h"
 #include "adc.h"
+#include "rss2.h"
 
 uint16_t
 adc_read(uint8_t pin)
@@ -56,4 +57,23 @@ adc_read(uint8_t pin)
   ADCSRA &= ~_BV(ADEN);
 
   return volt;
+}
+
+double 
+adc_read_v_in(void)
+{
+  /* Special treatment for v_in. Schottky voltage drop add */ 
+  return ((double) adc_read(AV_IN)) * V_IN_FACTOR_SCHOTTKY + SCHOTTKY_DROP;
+}
+
+double 
+adc_read_a1(void)
+{
+  return ((double) adc_read(A1)) * V_IN_FACTOR;
+}
+
+double 
+adc_read_a2(void)
+{
+  return ((double) adc_read(A2)) * V_IN_FACTOR;
 }
