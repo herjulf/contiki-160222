@@ -71,12 +71,23 @@ ipv6/rpl-udp
 ipv6/simple-udp-rpl
 rime
 ipv6/multicast
-example-shell (needs symbol.c to be added to project)
+example-shell  Needs symbol.c to be added to project also seems like
+in core/dev/serial-line.c process_poll must be replaced with 
+process_post.
 
-Platform tutorial application
-.----------------------------
-platform/avr-rss2/examles/ipv6/rpl-udp-report/
+  /* Wake up consumer process */
+-  process_poll(&serial_line_process);
++  process_post(&serial_line_process, 0, 0);
+
+
+Platform tutorial applications
+.-----------------------------
+Example to read out various sensors leds serial numbers etc.
+platform/avr-rss2/examples/hello-sensors/
+
 This example shows the sensd data encoding. But UDP using 6lowpan.
+platform/avr-rss2/examles/ipv6/rpl-udp-report/
+
 
 Approvals
 ---------
