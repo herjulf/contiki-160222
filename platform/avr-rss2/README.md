@@ -27,6 +27,9 @@ Boards Features
 * DC input up to 25V.
 * Standard. 6-pin TTL-USB header for FTDI cable for UART.
 * PCB formfactor for cheap project box G.40X IP54
+* Power/current:
+  ** RX ~10mA (Full RPC AtMegaXXRFR2). 
+  ** Sleep ~15uA
 * Preprogammed bootloader. 
 * CE certified by test institute.
 
