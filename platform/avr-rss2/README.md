@@ -16,13 +16,19 @@ programming skills.
 
 Boards Features
 ----------------
-Chip Antenna. Robust radio performance.
-Unique EUI64 address via chip combined with EEPROM
-Temp sensor DS18B20, Light Sensor.32 kHz RTC xtal
-Comparator chip and input. Preprogammed bootloader. 
-6-pin TTL-USB header for FTDI cable for UART. P-FET 
-(relay) for power on/off of sensors.
-CE certified by test institute.
+* Chip Antenna. Supercardiod.
+* Robust radio performance. Up to 300 meter line-of-sight.
+* Unique EUI64 address via chip combined with EEPROM
+* Onboard temp sensor DS18B20, 
+* Light Sensor.
+* 32kHz RTC xtal
+* Comparator chip and input. 
+* SW FET, (relay) for power on/off of sensors.
+* DC input up to 25V.
+* Standard. 6-pin TTL-USB header for FTDI cable for UART.
+* PCB formfactor for cheap project box G.40X IP54
+* Preprogammed bootloader. 
+* CE certified by test institute.
 
 UART 
 ----
@@ -40,7 +46,7 @@ Toolchain needs
 ---------------
 The Atmel toolcahin is available in most operating system. 
 Note. The native OS packages does not yet support the new 
-AtMega256RfR2 MCU.
+AtMega256RfR2 MCU. 
 
 We'll use toolchain from Atmels web-site. You might also consider 
 Instant Contiki
@@ -50,9 +56,13 @@ Instant Contiki
 See http://www.atmel.com/tools/ATMELAVRTOOLCHAINFORLINUX.aspx
 Download the proper 8-bit platform 32 or 64 bit.
 Unpack unpack under /usr/local
-
 Also add to your search PATH. For example .bashrc add:
 export PATH=$PATH:/usr/local/avr8-gnu-toolchain-linux_x86/bin
+or
+export PATH=$PATH:/usr/local/avr8-gnu-toolchain-linux_x86_64/bin
+
+For flash programming you need avrdude. For OS using apt-get
+apt-get install avrdude
 
 * For Windows.
 Goes here
