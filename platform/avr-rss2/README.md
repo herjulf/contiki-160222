@@ -38,12 +38,24 @@ The platform has the following key features:
 
 Toolchain needs
 ---------------
-The Atmel toolcahin is available in most operating system. For OS with
-Debian package handler.
+The Atmel toolcahin is available in most operating system. 
+Note. The native OS packages does not yet support the new 
+AtMega256RfR2 MCU.
 
-sudo apt-get install gcc-avr
-sudo apt-get install avrdude
-Also check Atmels web-site. You might also consider Instant Contiki
+We'll use toolchain from Atmels web-site. You might also consider 
+Instant Contiki
+
+
+* For Linux.
+See http://www.atmel.com/tools/ATMELAVRTOOLCHAINFORLINUX.aspx
+Download the proper 8-bit platform 32 or 64 bit.
+Unpack unpack under /usr/local
+
+Also add to your search PATH. For example .bashrc add:
+export PATH=$PATH:/usr/local/avr8-gnu-toolchain-linux_x86/bin
+
+* For Windows.
+Goes here
 
 Contiki build TARGET
 --------------------
