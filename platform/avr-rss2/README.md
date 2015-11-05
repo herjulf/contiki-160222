@@ -113,12 +113,13 @@ platform/avr-rss2/examles/ipv6/rpl-udp-report/
 
 Approvals
 ---------
-Summary: R&TTE 73/23/EEC, 89/336/EEC and 99/5/EC
-Safety: EN 60950-1:2006 + A12: 2011
-RF: ETSI EN 300 328 V1.7.1 (2006-10)
-EMC: ETSI EN 301 489-1 V1.9.2 (2011-09), ETSI EN 301 489-17 V2.2.1 (2012-09)
-EMF: EN 62479:2010
-Human exposure to electromagnetic fields: EN 62479:2010 
+Summary: 
+* R&TTE 73/23/EEC, 89/336/EEC and 99/5/EC
+* Safety: EN 60950-1:2006 + A12: 2011
+* RF: ETSI EN 300 328 V1.7.1 (2006-10)
+* EMC: ETSI EN 301 489-1 V1.9.2 (2011-09), ETSI EN 301 489-17 V2.2.1 (2012-09)
+* EMF: EN 62479:2010
+* Human exposure to electromagnetic fields: EN 62479:2010 
 
 Commercial availability
 ------------------------
@@ -135,8 +136,8 @@ Smart Reduced Power Consumption Techniques. AT02594. Available via Atmel.
 
 ToDo
 -----
-Shell and UART input.
 API for radio power saving settings introduced Atmels app note AT02594. 
+API for pulse input, P0, P1 (Comparator)
 Also function for the desensitizing RPC resister.
 
 Vendor info
