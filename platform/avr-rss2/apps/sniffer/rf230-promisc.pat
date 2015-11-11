@@ -1,5 +1,5 @@
 diff --git a/cpu/avr/radio/rf230bb/rf230bb.c b/cpu/avr/radio/rf230bb/rf230bb.c
-index 53959d1..d4f63a0 100644
+index 53959d1..c5f946a 100644
 --- a/cpu/avr/radio/rf230bb/rf230bb.c
 +++ b/cpu/avr/radio/rf230bb/rf230bb.c
 @@ -544,7 +544,7 @@ rf230_set_promiscuous_mode(bool isPromiscuous) {
@@ -28,9 +28,9 @@ index 53959d1..d4f63a0 100644
 +      rs232_send(0, 0x01);
 +      /* Print CMD == frame */
 +      rs232_send(0, 0x00);
-+      rs232_send(0, len+2);
++      rs232_send(0, len+3);
 +
-+      for (i=0;i<len+2;i++)  rs232_send(0, rxdata[i]);
++      for (i=0;i<len;i++)  rs232_send(0, rxdata[i]);
 +      printf("\n");
 +    }
 +
