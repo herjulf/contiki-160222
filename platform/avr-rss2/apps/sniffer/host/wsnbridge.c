@@ -443,7 +443,7 @@ int main(int argc, char *argv[])
 		      {
 			state = START_CAPTURE;
 			file_write = 1;
-			printf("\n");
+			//printf("\n");
 			got = 0;
 		      }
 		    break;
