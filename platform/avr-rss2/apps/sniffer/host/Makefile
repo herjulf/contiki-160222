@@ -1,7 +1,7 @@
 
 CC = gcc
 CFLAGS = -c
-SOURCES = wsnbridge.c
+SOURCES = wsbridge.c
 OBJECTS = $(SOURCES:.c=.o)
 EXE = wsbridge
 
