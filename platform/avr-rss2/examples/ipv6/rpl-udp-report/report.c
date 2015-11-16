@@ -56,13 +56,13 @@
 #include "net/ip/uip-debug.h"
 
 #ifndef PERIOD
-#define PERIOD 60
+#define PERIOD 5
 #endif
 
 #define START_INTERVAL		(15 * CLOCK_SECOND)
 #define SEND_INTERVAL		(PERIOD * CLOCK_SECOND)
 #define SEND_TIME		(random_rand() % (SEND_INTERVAL))
-#define MAX_PAYLOAD_LEN		30
+#define MAX_PAYLOAD_LEN		50
 
 static struct uip_udp_conn *client_conn;
 static uip_ipaddr_t server_ipaddr;
@@ -97,7 +97,7 @@ static void
 tcpip_handler(void)
 {
   char *str;
-
+  
   if(uip_newdata()) {
     str = uip_appdata;
     str[uip_datalen()] = '\0';
@@ -116,8 +116,8 @@ send_packet(void *ptr)
 
   len += snprintf((char *) &buf[len], sizeof(buf), "&: ");
   len += snprintf((char *) &buf[len], sizeof(buf), "V_MCU=%-d ", get_v_mcu());
-  len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", get_t_mcu());
-  len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", get_light());
+  //len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", get_t_mcu());
+  //len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", get_light());
 #ifdef CO2
   len += snprintf((char *) &buf[len], sizeof(buf), "CO2=%-d ", get_co2_sa_kxx(CO2_SA_KXX_CO2));
 #endif
