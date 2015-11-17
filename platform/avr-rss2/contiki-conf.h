@@ -41,6 +41,12 @@
 #ifndef CONTIKI_CONF_H_
 #define CONTIKI_CONF_H_
 
+/* include the project config */
+/* PROJECT_CONF_H might be defined in the project Makefile */
+#ifdef PROJECT_CONF_H
+#include PROJECT_CONF_H
+#endif
+
 /* Platform name, type, and MCU clock rate */
 #define PLATFORM_NAME  "rss2"
 #define PLATFORM_TYPE  ATMEGA256RFR2
@@ -49,6 +55,41 @@
 #endif
 
 #include <stdint.h>
+
+#ifndef NETSTACK_CONF_MAC
+#define NETSTACK_CONF_MAC     csma_driver
+#endif 
+
+#ifndef NETSTACK_CONF_RDC
+#define NETSTACK_CONF_RDC     contikimac_driver
+#endif 
+
+#ifndef NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE
+#define NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE 8
+#endif 
+
+#ifndef NETSTACK_CONF_FRAMER
+#if NETSTACK_CONF_WITH_IPV6
+#define NETSTACK_CONF_FRAMER  contikimac_framer
+#else 
+#define NETSTACK_CONF_FRAMER  framer_802154
+#endif 
+#endif 
+
+#ifndef NETSTACK_CONF_RADIO
+#define NETSTACK_CONF_RADIO   rf230_driver
+#endif
+
+#ifndef CHANNEL_802_15_4
+#define CHANNEL_802_15_4      26
+#endif
+
+/* AUTOACK receive mode gives better rssi measurements, even if ACK is never requested */
+#ifndef RF230_CONF_AUTOACK
+#define RF230_CONF_AUTOACK        1
+#endif
+
+#define MCUCSR  MCUSR
 
 /* The AVR tick interrupt usually is done with an 8 bit counter around 128 Hz.
  * 125 Hz needs slightly more overhead during the interrupt, as does a 32 bit
@@ -134,7 +175,9 @@ typedef unsigned short uip_stats_t;
 #define LINKADDR_CONF_SIZE        8
 #define UIP_CONF_ICMP6            1
 #define UIP_CONF_UDP              1
+#ifndef UIP_CONF_TCP
 #define UIP_CONF_TCP              1
+#endif
 #define NETSTACK_CONF_NETWORK     sicslowpan_driver
 #define SICSLOWPAN_CONF_COMPRESSION SICSLOWPAN_COMPRESSION_HC06
 #else
@@ -170,15 +213,11 @@ typedef unsigned short uip_stats_t;
 #define UIP_CONF_DHCP_LIGHT      1
 
 
-#if 1 /* No radio cycling */
+#if 0 /* No radio cycling */
 
 #define NETSTACK_CONF_MAC         nullmac_driver
 #define NETSTACK_CONF_RDC         sicslowmac_driver
 #define NETSTACK_CONF_FRAMER      framer_802154
-#define NETSTACK_CONF_RADIO       rf230_driver
-#define CHANNEL_802_15_4          26
-/* AUTOACK receive mode gives better rssi measurements, even if ACK is never requested */
-#define RF230_CONF_AUTOACK        1
 /* 1 + Number of auto retry attempts 0-15 (0 implies don't use extended TX_ARET_ON mode) */
 #define RF230_CONF_FRAME_RETRIES    2
 /* Number of csma retry attempts 0-5 in extended tx mode (7 does immediate tx with no csma) */
@@ -215,32 +254,22 @@ typedef unsigned short uip_stats_t;
 #define UIP_CONF_DS6_MADDR_NBU    0
 #define UIP_CONF_DS6_AADDR_NBU    0
 
-
 #elif 1  /* Contiki-mac radio cycling */
 //#define NETSTACK_CONF_MAC         nullmac_driver
 /* csma needed for burst mode at present. Webserver won't work without it */
-#define NETSTACK_CONF_MAC         csma_driver
-#define NETSTACK_CONF_RDC         contikimac_driver
+//#define NETSTACK_CONF_MAC         csma_driver
+//#define NETSTACK_CONF_RDC         contikimac_driver
 /* Default is two CCA separated by 500 usec */
-#define NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE   8
+
 /* So without the header this needed for RPL mesh to form */
 #define CONTIKIMAC_FRAMER_CONF_SHORTEST_PACKET_SIZE   43-18  //multicast RPL DIS length
 /* Not tested much yet */
-#define WITH_PHASE_OPTIMIZATION                0
+#define CONTIKIMAC_CONF_WITH_PHASE_OPTIMIZATION 0
 #define CONTIKIMAC_CONF_COMPOWER               1
-#define RIMESTATS_CONF_ENABLED                 1
+#define RIMESTATS_CONF_ENABLED                 0
 
-#if NETSTACK_CONF_WITH_IPV6
-#define NETSTACK_CONF_FRAMER      framer802154
-#else /* NETSTACK_CONF_WITH_IPV6 */
-#define NETSTACK_CONF_FRAMER      contikimac_framer
-#endif /* NETSTACK_CONF_WITH_IPV6 */
-
-#define NETSTACK_CONF_RADIO       rf230_driver
-#define CHANNEL_802_15_4          26
 /* The radio needs to interrupt during an rtimer interrupt */
 #define RTIMER_CONF_NESTED_INTERRUPTS 1
-#define RF230_CONF_AUTOACK        1
 /* A 0 here means non-extended mode; 1 means extended mode with no retry, >1 for retrys */
 /* Contikimac strobes on its own, but hardware retries are faster */
 #define RF230_CONF_FRAME_RETRIES  1
@@ -264,8 +293,7 @@ typedef unsigned short uip_stats_t;
 #define UIP_CONF_DS6_MADDR_NBU    0
 #define UIP_CONF_DS6_AADDR_NBU    0
 
-
-#elif 1  /* cx-mac radio cycling */
+#elif 0  /* cx-mac radio cycling */
 /* RF230 does clear-channel assessment in extended mode (autoretries>0) */
 /* These values are guesses */
 #define RF230_CONF_FRAME_RETRIES  10
@@ -277,13 +305,10 @@ typedef unsigned short uip_stats_t;
 #endif
 #define NETSTACK_CONF_RDC         cxmac_driver
 #define NETSTACK_CONF_FRAMER      framer_802154
-#define NETSTACK_CONF_RADIO       rf230_driver
-#define CHANNEL_802_15_4          26
-#define RF230_CONF_AUTOACK        1
 #define SICSLOWPAN_CONF_FRAG      1
 #define SICSLOWPAN_CONF_MAXAGE    3
 #define CXMAC_CONF_ANNOUNCEMENTS  0
-#define NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE 8
+
 /* 211 bytes per queue buffer. Burst mode will need 15 for a 1280 byte MTU */
 #define QUEUEBUF_CONF_NUM         15
 /* 54 bytes per queue ref buffer */
@@ -305,7 +330,7 @@ typedef unsigned short uip_stats_t;
 //#define CXMAC_CONF_ON_TIME (RTIMER_ARCH_SECOND / 16)
 
 #else
-#error Network configuration not specified!
+//#error Network configuration not specified!
 #endif   /* Network setup */
 
 /* ************************************************************************** */
@@ -333,12 +358,6 @@ typedef unsigned short uip_stats_t;
 #define CLIF
 #ifndef CC_CONF_INLINE
 #define CC_CONF_INLINE inline
-#endif
-
-/* include the project config */
-/* PROJECT_CONF_H might be defined in the project Makefile */
-#ifdef PROJECT_CONF_H
-#include PROJECT_CONF_H
 #endif
 
 #endif /* CONTIKI_CONF_H_ */
