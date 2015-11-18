@@ -113,6 +113,9 @@ typedef unsigned long clock_time_t;
 void clock_delay_msec(uint16_t howlong);
 void clock_adjust_ticks(clock_time_t howmany);
 
+/* The radio needs to interrupt during an rtimer interrupt */
+#define RTIMER_CONF_NESTED_INTERRUPTS 1
+
 /* RSS2 boards has a 32768Hz on TIMER2 */
 #define AVR_CONF_USE32KCRYSTAL 1
 #define SLIP_PORT RS232_PORT_0
@@ -268,8 +271,6 @@ typedef unsigned short uip_stats_t;
 #define CONTIKIMAC_CONF_COMPOWER               1
 #define RIMESTATS_CONF_ENABLED                 0
 
-/* The radio needs to interrupt during an rtimer interrupt */
-#define RTIMER_CONF_NESTED_INTERRUPTS 1
 /* A 0 here means non-extended mode; 1 means extended mode with no retry, >1 for retrys */
 /* Contikimac strobes on its own, but hardware retries are faster */
 #define RF230_CONF_FRAME_RETRIES  1

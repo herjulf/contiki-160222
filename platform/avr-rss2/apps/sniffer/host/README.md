@@ -7,8 +7,8 @@ wsbridge (See copyright i file) code to use the format used by sensniff.
 You can also use sensniff which is a Python script. Author of senssniff 
 is George Oikonomou (oikonomou@users.sf.net)
 
-See the: 
-https://github.com/g-oikonomou/sensniff.
+See: 
+https://github.com/g-oikonomou/sensniff
 
 
 Function
@@ -32,6 +32,7 @@ Default serial port speed
 -------------------------
 38400 bps
 
-
-
-
+References
+----------
+http://www.freaklabs.org/index.php/wsbridge.html
+https://github.com/g-oikonomou/sensniff
