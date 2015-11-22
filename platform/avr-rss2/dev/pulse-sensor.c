@@ -33,79 +33,86 @@
  * Created : 2015-11-22
  */
 
-/**
- * \file
- *         A simple application showing sensor reading on RSS2 mote
+#include "contiki.h"
+#include "lib/sensors.h"
+#include "dev/pulse-sensor.h"
+#include "rss2.h"
+
+const struct sensors_sensor pulse_sensor;
+
+#define NP 2
+
+uint32_t volatile pc[NP];
+
+/* 
+ * Note interrupt sources can be woken up from sleep mode PWR_SAVE
+ * Two interrupt ports, #0 green terminal block. #1 pin header via 
+ * a comparator.
  */
 
-#include "contiki.h"
-#include "sys/etimer.h"
-#include <stdio.h>
-#include "adc.h"
-#include "i2c.h"
-#include "dev/leds.h"
-#include "dev/battery-sensor.h"
-#include "dev/temp_mcu-sensor.h"
-#include "dev/light-sensor.h"
-#include "dev/pulse-sensor.h"
-#ifdef CO2
-#include "dev/co2_sa_kxx-sensor.h"
-#endif
-/*---------------------------------------------------------------------------*/
-PROCESS(hello_sensors_process, "Hello sensor process");
-AUTOSTART_PROCESSES(&hello_sensors_process);
-
-static struct etimer et;
-
-/*---------------------------------------------------------------------------*/
-PROCESS_THREAD(hello_sensors_process, ev, data)
+static void 
+port_irq_ctrl(uint8_t on)
 {
-  char serial[16];
-  int i;
+  if(on) {
 
-  PROCESS_BEGIN();
+    DDRD &=  ~(1<<PD2);
+    PORTD &= ~(1<<PD2);
+    EIMSK = 0; 
+    EICRA |=  0x20;   /* Falling edge INT2 */
+    EIMSK |=  (1<<PD2);  /* Enable interrupt for pin */
+    
+    /* p1 port */
+    DDRD &=  ~(1<<PD3);
+    PORTD &= ~(1<<PD3);
+    EIMSK |=  (1<<PD3);  /* Enable interrupt for pin */
+    EICRA |=      0x80;   /* Falling edge */
+    PCICR |= (1<<PCIE0);  /* And enable irq PCINT 7:0 */
+  }
+  else {
+    EICRA = 0;
+    PORTD |= (1<<PD2);
+    EIMSK &= ~(1<<PD2);    /* Disable interrupt for pin */
 
-  SENSORS_ACTIVATE(battery_sensor);
-  SENSORS_ACTIVATE(temp_mcu_sensor);
-  SENSORS_ACTIVATE(light_sensor);
-  SENSORS_ACTIVATE(pulse_sensor);
-#ifdef CO2
-  SENSORS_ACTIVATE(co2_sa_kxx_sensor);
-#endif
-  leds_init(); 
-  leds_on(LEDS_RED);
-  leds_on(LEDS_YELLOW);
+    PORTD |= (1<<PD3);
+    EIMSK &= ~(1<<PD3);    /* Disable interrupt for pin */
+  }
+}
 
-  /* 
-   * Delay 5 sec 
-   * Gives a chance to trigger some pulses
-   */
+ISR(INT2_vect)
+{
+  if( ! (PCICR & (1<<PCIE0)))
+    return;
+    pc[0]++;
+}
 
-  printf("Sleep...\n");
-  etimer_set(&et, CLOCK_SECOND * 4);
-  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
-  etimer_reset(&et);
-
-  /* Read out mote unique 128 bit ID */
-  i2c_at24mac_read(&serial, 0);
- 
-  printf("Reading sensors---------\n");
-
-  printf("128_bit_ID=");
-  for(i=0; i < 15; i++)
-    printf("%02x", serial[i]);
-  printf("%02x\n", serial[15]);
-  printf("V_MCU=%-3.1f\n", ((double) battery_sensor.value(0))/1000.);
-  printf("V_IN=%-4.2f\n", adc_read_v_in());
-  printf("V_AD1=%-4.2f\n", adc_read_a1());
-  printf("V_AD2=%-4.2f\n", adc_read_a2());
-  printf("T_MCU=%-4.1f\n", ((double) temp_mcu_sensor.value(0)/10.));
-  printf("LIGHT=%-d\n", light_sensor.value(0));
-  printf("PULSE_0=%-d\n", pulse_sensor.value(0));
-  printf("PULSE_1=%-d\n", pulse_sensor.value(1));
-#ifdef CO2
-  printf("CO2=%-d\n", co2_sa_kxx_sensor.value(value);
-#endif
-  PROCESS_END();
+ISR(INT3_vect)
+{
+  if( ! (PCICR & (1<<PCIE0)))
+    return;
+    pc[1]++;
 }
 /*---------------------------------------------------------------------------*/
+static int
+value(int type)
+{
+  if(type == 0) 
+    return (int) pc[0];
+  if(type == 1) 
+    return (int) pc[1];
+  return -1;
+}
+/*---------------------------------------------------------------------------*/
+static int
+status(int type)
+{
+  return 0;
+}
+/*---------------------------------------------------------------------------*/
+static int
+configure(int type, int c)
+{
+  port_irq_ctrl(1);  /* Enable pulse counts */
+  return 0;
+}
+/*---------------------------------------------------------------------------*/
+SENSORS_SENSOR(pulse_sensor, "Pulse", value, configure, status);
