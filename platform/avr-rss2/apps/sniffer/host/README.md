@@ -1,6 +1,6 @@
 Sniffer application host side
 =============================
-This a a Unix applications to link between the serial port having the
+This a Unix application to link between the serial port having the
 sensor node connected and Wireshark or tcpdump. Enclosed is a modified 
 wsbridge (See copyright i file) code to use the format used by sensniff. 
 
