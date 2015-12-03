@@ -347,6 +347,7 @@ typedef unsigned short uip_stats_t;
 /* For slow slip connections, to prevent buffer overruns */
 //#define UIP_CONF_RECEIVE_WINDOW 300
 #undef UIP_CONF_FWCACHE_SIZE
+#define UIP_CONF_BUFFER_SIZE   600 /*  DHCPv4 packets by ip64 module */
 #define UIP_CONF_FWCACHE_SIZE    30
 #define UIP_CONF_BROADCAST       1
 #define UIP_ARCH_IPCHKSUM        1
@@ -360,5 +361,6 @@ typedef unsigned short uip_stats_t;
 #ifndef CC_CONF_INLINE
 #define CC_CONF_INLINE inline
 #endif
+
 
 #endif /* CONTIKI_CONF_H_ */
