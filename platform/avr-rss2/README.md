@@ -4,7 +4,7 @@ This guide's aim is to help you start using Contiki for RSS2 boards
 The platform supports two different RSS2 boards:
 
 * Based on MCU AtMega256RFR2
-* Based on MCU AtMega128RFA1 (bonus) 
+* Based on MCU AtMega128RFA1 
 
 Boards looks the same. "Made in EU" labeled on the AtMega256RFR2 boards
 The platform and CPU code, are common for both boards, can be found under 
@@ -64,7 +64,7 @@ export PATH=$PATH:/usr/local/avr8-gnu-toolchain-linux_x86/bin
 or
 export PATH=$PATH:/usr/local/avr8-gnu-toolchain-linux_x86_64/bin
 
-For flash programming you need avrdude. For OS using apt-get
+For flash programming you'll need avrdude. For OS using apt-get
 apt-get install avrdude
 
 * For Windows.
@@ -83,8 +83,11 @@ Programming using avrdude using serial bootloader. (TTL-USB cable)
 Press the RESET button. The bootloader with wait for boot commands 
 for 3 seconds.
 
-Flashing commnad line example:
+Flashing commnad line example 256k MCU:
 avrdude -p m256rfr2 -c stk500v2 -P /dev/ttyUSB0 -b 38400 -e -U flash:w:hello-world.avr-rss2 
+
+Flashing commnad line example 128k MCU:
+avrdude -p m128rfa1 -c avr109 -P /dev/ttyUSB0 -b 38400 -e -U flash:w:hello-world.avr-rss2 
 
 Older boards may use the avr109 boot loader. The stk500v2 uses the yellow 
 lED while the avr109 uses the red LED.
@@ -104,6 +107,7 @@ process_post.
 -  process_poll(&serial_line_process);
 +  process_post(&serial_line_process, 0, 0);
 
+examples/powertrace
 
 Platform tutorial applications
 .-----------------------------
