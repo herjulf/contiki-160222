@@ -41,7 +41,8 @@
 #include "net/ip/uip.h"
 #include "net/ipv6/uip-ds6.h"
 #include "net/rpl/rpl.h"
-
+#include "enc28j60.h"
+#include "enc28j60-ip64-driver.h"
 #include "net/netstack.h"
 #include "dev/button-sensor.h"
 #include "dev/slip.h"
@@ -333,35 +334,6 @@ set_prefix_64(uip_ipaddr_t *prefix_64)
   }
 }
 
-static void
-init_eth(void)
-{
-  uint8_t eui64[8];
-  uint8_t macaddr[6];
-
-  /* Assume that linkaddr_node_addr holds the EUI64 of this device. */
-  memcpy(eui64, &linkaddr_node_addr, sizeof(eui64));
-
-  /* Mangle the EUI64 into a 48-bit Ethernet address. */
-  memcpy(&macaddr[0], &eui64[0], 3);
-  memcpy(&macaddr[3], &eui64[5], 3);
-
-  /* In case the OUI happens to contain a broadcast bit, we mask that
-     out here. */
-  macaddr[0] = (macaddr[0] & 0xfe);
-
-  /* Set the U/L bit, in order to create a locally administered MAC address */
-  macaddr[0] = (macaddr[0] | 0x02);
-
-  //memcpy(ip64_eth_addr.addr, macaddr, sizeof(macaddr));
-
-  printf("MAC addr %02x:%02x:%02x:%02x:%02x:%02x\n",
-         macaddr[0], macaddr[1], macaddr[2],
-         macaddr[3], macaddr[4], macaddr[5]);
-  enc28j60_init(macaddr);
-}
-
-
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(border_router_process, ev, data)
 {
@@ -382,8 +354,8 @@ PROCESS_THREAD(border_router_process, ev, data)
 
   SENSORS_ACTIVATE(button_sensor);
   leds_init();
+  ip64_init();
 
-  init_eth();
   PRINTF("RPL-Border router started\n");
 #if 0
    /* The border router runs with a 100% duty cycle in order to ensure high
@@ -394,15 +366,16 @@ PROCESS_THREAD(border_router_process, ev, data)
 #endif
 
   /* Request prefix until it has been received */
-
+#if 0
   while(!prefix_set) {
     etimer_set(&et, CLOCK_SECOND);
     request_prefix();
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
     leds_on(LEDS_RED);
     //enc28j60_send(&pkt, sizeof(pkt));
-    enc28j60_read(&pkt, sizeof(pkt));
+    //enc28j60_read(&pkt, sizeof(pkt));
   }
+#endif
 
   /* Now turn the radio on, but disable radio duty cycling.
    * Since we are the DAG root, reception delays would constrain mesh throughbut.

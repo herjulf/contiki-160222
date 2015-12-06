@@ -30,11 +30,11 @@
  */
 
 #include "contiki.h"
+#include "net/linkaddr.h"
 #include "enc28j60.h"
-//#include "enc28j60-ip64-driver.h"
-
+#include "enc28j60-ip64-driver.h"
 #include "ip64.h"
-//#include "ip64-eth.h"
+#include "ip64-eth.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -101,3 +101,13 @@ const struct ip64_driver enc28j60_ip64_driver = {
   output
 };
 /*---------------------------------------------------------------------------*/
+
+void init_xyz(void)
+{
+  enc28j60_ip64_driver.init();
+}
+
+void output_xyz(uint8_t *packet, uint16_t len)
+{
+  enc28j60_ip64_driver.output(packet, len);
+}
