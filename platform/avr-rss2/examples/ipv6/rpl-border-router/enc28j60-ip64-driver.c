@@ -30,9 +30,10 @@
  */
 
 #include "contiki.h"
-#include "net/linkaddr.h"
 #include "enc28j60.h"
 #include "enc28j60-ip64-driver.h"
+#include "net/linkaddr.h"
+
 #include "ip64.h"
 #include "ip64-eth.h"
 
@@ -68,7 +69,6 @@ init(void)
          macaddr[0], macaddr[1], macaddr[2],
          macaddr[3], macaddr[4], macaddr[5]);
   enc28j60_init(macaddr);
-  ip64_eth_addr_set(macaddr);
   process_start(&enc28j60_ip64_driver_process, NULL);
 }
 /*---------------------------------------------------------------------------*/
@@ -102,13 +102,3 @@ const struct ip64_driver enc28j60_ip64_driver = {
   output
 };
 /*---------------------------------------------------------------------------*/
-
-void init_xyz(void)
-{
-  enc28j60_ip64_driver.init();
-}
-
-void output_xyz(uint8_t *packet, uint16_t len)
-{
-  enc28j60_ip64_driver.output(packet, len);
-}

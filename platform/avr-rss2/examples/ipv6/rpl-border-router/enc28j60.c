@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#define DEBUG 0
 #if DEBUG
 #define PRINTF(...) printf(__VA_ARGS__)
 #else
@@ -222,7 +223,7 @@ reset(void)
   PRINTF("enc28j60: resetting chip\n");
 
   enc28j60_arch_spi_init();
- 
+
   /*
     6.0 INITIALIZATION
 
@@ -283,7 +284,7 @@ reset(void)
 
   /* Wait for OST */
   while((readreg(ESTAT) & ESTAT_CLKRDY) == 0);
- 
+
   softreset();
 
   setregbank(ERXTX_BANK);

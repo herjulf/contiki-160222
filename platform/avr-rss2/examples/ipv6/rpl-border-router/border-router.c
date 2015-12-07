@@ -40,6 +40,7 @@
 #include "contiki-net.h"
 #include "net/ip/uip.h"
 #include "net/ipv6/uip-ds6.h"
+#include "ip64.h"
 #include "net/rpl/rpl.h"
 #include "enc28j60.h"
 #include "enc28j60-ip64-driver.h"
@@ -280,7 +281,6 @@ PT_THREAD(generate_routes(struct httpd_state *s))
 httpd_simple_script_t
 httpd_simple_get_script(const char *name)
 {
-
   return generate_routes;
 }
 
@@ -337,9 +337,6 @@ set_prefix_64(uip_ipaddr_t *prefix_64)
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(border_router_process, ev, data)
 {
-  static struct etimer et;
-  static char pkt[1515];
-
   PROCESS_BEGIN();
 
 /* While waiting for the prefix to be sent through the SLIP connection, the future
@@ -363,18 +360,6 @@ PROCESS_THREAD(border_router_process, ev, data)
      Note if the MAC RDC is not turned off now, aggressive power management of the
      cpu will interfere with establishing the SLIP connection */
   NETSTACK_MAC.off(1);
-#endif
-
-  /* Request prefix until it has been received */
-#if 0
-  while(!prefix_set) {
-    etimer_set(&et, CLOCK_SECOND);
-    request_prefix();
-    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
-    leds_on(LEDS_RED);
-    //enc28j60_send(&pkt, sizeof(pkt));
-    //enc28j60_read(&pkt, sizeof(pkt));
-  }
 #endif
 
   /* Now turn the radio on, but disable radio duty cycling.

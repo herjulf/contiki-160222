@@ -5,27 +5,20 @@
 
 #define UIP_IP_BUF        ((struct uip_ip_hdr *)&uip_buf[UIP_LLH_LEN])
 
-#define DEBUG DEBUG_PRINT
+#define DEBUG DEBUG_NONE
 #include "net/ip/uip-debug.h"
-
-void set_prefix_64(uip_ipaddr_t *); 
 
 static void
 init(void)
 {
-  printf("eth-bridge: INIT\n");
-  //slip_set_input_callback(slip_input_callback);
-  init_xyz();
-  ip64_eth_addr_set(&linkaddr_node_addr);
-  ip64_init();
+  PRINTF("eth-bridge: init\n");
   ip64_eth_interface.init();
 }
 /*---------------------------------------------------------------------------*/
 static int
 output()
 {
-  printf("eth-bridge:\n");
-  PRINTF("eth-bridge: Destination off-link but no route src=");
+  PRINTF("eth-bridge: src=");
   PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
   PRINTF(" dst=");
   PRINT6ADDR(&UIP_IP_BUF->destipaddr);
