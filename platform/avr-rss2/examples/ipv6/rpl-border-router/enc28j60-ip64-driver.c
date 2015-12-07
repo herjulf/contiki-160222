@@ -68,6 +68,7 @@ init(void)
          macaddr[0], macaddr[1], macaddr[2],
          macaddr[3], macaddr[4], macaddr[5]);
   enc28j60_init(macaddr);
+  ip64_eth_addr_set(macaddr);
   process_start(&enc28j60_ip64_driver_process, NULL);
 }
 /*---------------------------------------------------------------------------*/
