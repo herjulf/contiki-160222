@@ -54,7 +54,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DEBUG DEBUG_NONE
+#define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
 
 static uip_ipaddr_t prefix;
@@ -78,15 +78,15 @@ AUTOSTART_PROCESSES(&border_router_process,&webserver_nogui_process);
 /* The internal webserver can provide additional information if
  * enough program flash is available.
  */
-#define WEBSERVER_CONF_LOADTIME 0
-#define WEBSERVER_CONF_FILESTATS 0
-#define WEBSERVER_CONF_NEIGHBOR_STATUS 0
+#define WEBSERVER_CONF_LOADTIME 1
+#define WEBSERVER_CONF_FILESTATS 1
+#define WEBSERVER_CONF_NEIGHBOR_STATUS 1
 /* Adding links requires a larger RAM buffer. To avoid static allocation
  * the stack can be used for formatting; however tcp retransmissions
  * and multiple connections can result in garbled segments.
  * TODO:use PSOCk_GENERATOR_SEND and tcp state storage to fix this.
  */
-#define WEBSERVER_CONF_ROUTE_LINKS 0
+#define WEBSERVER_CONF_ROUTE_LINKS 1
 #if WEBSERVER_CONF_ROUTE_LINKS
 #define BUF_USES_STACK 1
 #endif
@@ -269,7 +269,7 @@ PT_THREAD(generate_routes(struct httpd_state *s))
 
 #if WEBSERVER_CONF_LOADTIME
   numticks = clock_time() - numticks + 1;
-  ADD(" <i>(%u.%02u sec)</i>",numticks/CLOCK_SECOND,(100*(numticks%CLOCK_SECOND))/CLOCK_SECOND));
+  ADD(" <i>(%u.%02u sec)</i>",numticks/CLOCK_SECOND,((100*(numticks%CLOCK_SECOND))/CLOCK_SECOND));
 #endif
 
   SEND_STRING(&s->sout, buf);
@@ -338,6 +338,7 @@ set_prefix_64(uip_ipaddr_t *prefix_64)
 PROCESS_THREAD(border_router_process, ev, data)
 {
   PROCESS_BEGIN();
+  uip_ipaddr_t ipaddr;
 
 /* While waiting for the prefix to be sent through the SLIP connection, the future
  * border router can join an existing DAG as a parent or child, or acquire a default
@@ -367,9 +368,9 @@ PROCESS_THREAD(border_router_process, ev, data)
    */
   NETSTACK_MAC.off(1);
 
-#if DEBUG || 1
-  print_local_addresses();
-#endif
+/* Derived from link local (MAC) address */
+  uip_ip6addr(&ipaddr, 0xaaaa, 0, 0, 0, 0, 0, 0, 0);
+  set_prefix_64(&ipaddr);
 
   while(1) {
     PROCESS_YIELD();
