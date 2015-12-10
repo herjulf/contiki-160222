@@ -56,7 +56,7 @@
 #include "net/ip/uip-debug.h"
 
 #ifndef PERIOD
-#define PERIOD 5
+#define PERIOD 10
 #endif
 
 #define START_INTERVAL		(15 * CLOCK_SECOND)
@@ -67,28 +67,6 @@
 static struct uip_udp_conn *client_conn;
 static uip_ipaddr_t server_ipaddr;
 
-static int
-get_v_mcu(void)
-{
-  return battery_sensor.value(0);
-}
-static int
-get_t_mcu(void)
-{
-  return temp_mcu_sensor.value(0);
-}
-static int
-get_light(void)
-{
-  return light_sensor.value(0);
-}
-#ifdef CO2
-static int
-get_co2_sa_kxx(int value)
-{
-  return co2_sa_kxx_sensor.value(value);
-}
-#endif
 /*---------------------------------------------------------------------------*/
 PROCESS(udp_client_process, "UDP client process");
 AUTOSTART_PROCESSES(&udp_client_process);
@@ -115,11 +93,11 @@ send_packet(void *ptr)
   seq_id++;
 
   len += snprintf((char *) &buf[len], sizeof(buf), "&: ");
-  len += snprintf((char *) &buf[len], sizeof(buf), "V_MCU=%-d ", get_v_mcu());
-  //len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", get_t_mcu());
-  //len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", get_light());
+  len += snprintf((char *) &buf[len], sizeof(buf), "V_MCU=%-d ", battery_sensor.value(0));
+  len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", temp_mcu_sensor.value(0));
+  len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", light_sensor.value(0));
 #ifdef CO2
-  len += snprintf((char *) &buf[len], sizeof(buf), "CO2=%-d ", get_co2_sa_kxx(CO2_SA_KXX_CO2));
+  len += snprintf((char *) &buf[len], sizeof(buf), "CO2=%-d ", co2_sa_kxx_sensor.value(value));
 #endif
   PRINTF("TX %d to %d %s\n",
          server_ipaddr.u8[sizeof(server_ipaddr.u8) - 1], seq_id, buf);
@@ -204,12 +182,6 @@ PROCESS_THREAD(udp_client_process, ev, data)
   set_global_address();
   leds_init();
 
-  printf("V_MCU=%-d\n", get_v_mcu());
-  printf("T_MCU=%-d\n", get_t_mcu());
-  printf("LIGHT=%-d\n", get_light());
-#ifdef CO2
-  printf("CO2=%-d\n", get_co2_sa_kxx(CO2_SA_KXX_CO2));
-#endif
   PRINTF("UDP client process started\n");
 
   print_local_addresses();
