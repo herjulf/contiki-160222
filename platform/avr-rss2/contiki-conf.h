@@ -233,8 +233,6 @@ typedef unsigned short uip_stats_t;
 /* How long to wait before terminating an idle TCP connection. Smaller to allow faster sleep. Default is 120 seconds */
 /* If wait is too short the connection can be reset as a result of multiple fragment reassembly timeouts */
 #define UIP_CONF_WAIT_TIMEOUT    20
-/* 211 bytes per queue buffer */
-#define QUEUEBUF_CONF_NUM         8
 /* 54 bytes per queue ref buffer */
 #define QUEUEBUF_CONF_REF_NUM     2
 /* Allocate remaining RAM as desired */
@@ -278,8 +276,6 @@ typedef unsigned short uip_stats_t;
 #define RF230_CONF_CSMA_RETRIES   0
 #define SICSLOWPAN_CONF_FRAG      1
 #define SICSLOWPAN_CONF_MAXAGE    3
-/* 211 bytes per queue buffer. Contikimac burst mode needs 15 for a 1280 byte MTU */
-#define QUEUEBUF_CONF_NUM         15
 /* 54 bytes per queue ref buffer */
 #define QUEUEBUF_CONF_REF_NUM     2
 /* Allocate remaining RAM. Not much left due to queuebuf increase  */
@@ -309,9 +305,6 @@ typedef unsigned short uip_stats_t;
 #define SICSLOWPAN_CONF_FRAG      1
 #define SICSLOWPAN_CONF_MAXAGE    3
 #define CXMAC_CONF_ANNOUNCEMENTS  0
-
-/* 211 bytes per queue buffer. Burst mode will need 15 for a 1280 byte MTU */
-#define QUEUEBUF_CONF_NUM         15
 /* 54 bytes per queue ref buffer */
 #define QUEUEBUF_CONF_REF_NUM     2
 /* Allocate remaining RAM. Not much left due to queuebuf increase  */
@@ -333,6 +326,10 @@ typedef unsigned short uip_stats_t;
 #else
 //#error Network configuration not specified!
 #endif   /* Network setup */
+
+#ifndef QUEUEBUF_CONF_NUM
+#define QUEUEBUF_CONF_NUM         15
+#endif
 
 /* ************************************************************************** */
 //#pragma mark RPL Settings

@@ -4,9 +4,9 @@ CONTIKI_CORE=contiki-main
 CONTIKI_TARGET_MAIN = ${CONTIKI_CORE}.o
 CONTIKI_TARGET_SOURCEFILES += contiki-main.c params.c battery-sensor.c i2c.c
 
-CONTIKI_TARGET_SOURCEFILES += sensors.c button-sensor.c slip_uart0.c slip.c leds.c temp_mcu-sensor.c light-sensor.c adc.c cfs-eeprom.c eeprom.c pulse-sensor.c
+CONTIKI_TARGET_SOURCEFILES += sensors.c button-sensor.c slip_uart0.c slip.c leds.c temp_mcu-sensor.c light-sensor.c adc.c cfs-eeprom.c eeprom.c pulse-sensor.c temp-sensor.c
 
-
+CONTIKI_TARGET_SOURCEFILES += enc28j60_avr.c
 CONTIKI_TARGET_SOURCEFILES += co2_sa_kxx-sensor.c
 
 CONTIKIAVR=$(CONTIKI)/cpu/avr
@@ -40,3 +40,11 @@ include $(CONTIKIAVR)/radio/Makefile.radio
 #MODULES += core/net/mac core/net core/net/mac/sicslowmac core/net/mac/contikimac core/net/llsec core/net/rime
 
 MODULES += core/net/mac core/net core/net/mac/sicslowmac core/net/mac/contikimac core/net/llsec 
+
+# Candidate for global makefile
+ifeq ($(CONTIKI_WITH_RIME),1)
+else
+MODULES += core/net/ip64
+endif
+
+

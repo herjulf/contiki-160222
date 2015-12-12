@@ -8,9 +8,12 @@ SMALL=1
 
 CFLAGS += -DPROJECT_CONF_H=\"project-conf.h\"
 PROJECT_SOURCEFILES += eth-bridge.c
-PROJECT_SOURCEFILES += enc28j60.c 
+#PROJECT_SOURCEFILES += enc28j60.c
+PROJECT_SOURCEFILES += enc28j60-ip64-driver.c
 
 APPS += ping6
+
+MODULES += dev/enc28j60
 
 #Simple built-in webserver is the default.
 #Override with make WITH_WEBSERVER=0 for no webserver.
