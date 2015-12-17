@@ -35,7 +35,7 @@
  *
  * \author
  *         George Oikonomou - <oikonomou@users.sourceforge.net>
- *         Robert Olsson - <robert@radio-senors-com>
+ *         Robert Olsson - <robert@radio.sensors.com>
  */
 
 #ifndef PROJECT_CONF_H_
