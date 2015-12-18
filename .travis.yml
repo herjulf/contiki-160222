@@ -27,7 +27,7 @@ before_script:
   ## OLD: - sudo apt-get -qq install gcc-avr avr-libc
   ## We need support for later avr MCU's
 
- export PREFIX=/usr/local/avr
+  export PREFIX=/usr/local/avr
   export PATH=$PREFIX/bin:$PATH
   mkdir $PREFIX
   cd    $PREFIX
@@ -37,8 +37,8 @@ before_script:
   wget ftp://sourceware.org/pub/binutils/releases/binutils-2.24.tar.bz2
   wget http://www.netgull.com/gcc/releases/gcc-4.8.2/gcc-4.8.2.tar.bz2
 
-# Build avr binutils
-# http://sources.redhat.com/binutils
+  # Build avr binutils
+  # http://sources.redhat.com/binutils
   cd ../src
   bunzip2 -c ../downloads/binutils-2.24.tar.bz2 | tar xf -
   cd binutils-2.24
