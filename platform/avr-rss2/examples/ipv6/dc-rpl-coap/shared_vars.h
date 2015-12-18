@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Loughborough University - Computer Science
+ * Copyright (c) 2015, ICT/COS/NSLab, KTH Royal Institute of Technology
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,21 +31,17 @@
 
 /**
  * \file
- *         Project specific configuration defines for the sniffer example.
- *
+ *      shared variables
  * \author
- *         George Oikonomou - <oikonomou@users.sourceforge.net>
- *         Robert Olsson - <robert@radio.sensors.com>
+ *      Voravit Tanyingyong <voravit@kth.se>
  */
 
-#ifndef PROJECT_CONF_H_
-#define PROJECT_CONF_H_
 
+/* 
+   VDC_MAX to VDC_MIN defines the operational voltage interval 
+   for load sharing according to droop control algorithm.
+*/
 
-#define NETSTACK_CONF_MAC      nullmac_driver
-/* Can see other channels. Interesting. */
-/* #define NETSTACK_CONF_MAC      csma_driver */
-#define NETSTACK_CONF_RDC      stub_rdc_driver
+int set_vdc(vdc_droop_t var, int value);
+int get_vdc(vdc_droop_t var);
 
-
-#endif /* PROJECT_CONF_H_ */

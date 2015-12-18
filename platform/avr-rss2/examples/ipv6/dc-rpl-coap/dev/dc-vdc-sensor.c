@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Loughborough University - Computer Science
+ * Copyright (c) 2015, ICT/COS/NSLab, KTH Royal Institute of Technology
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,21 +31,67 @@
 
 /**
  * \file
- *         Project specific configuration defines for the sniffer example.
- *
+ *      dcdc/vdc for voltage droop control function
  * \author
- *         George Oikonomou - <oikonomou@users.sourceforge.net>
- *         Robert Olsson - <robert@radio.sensors.com>
+ *      Voravit Tanyingyong <voravit@kth.se>
  */
 
-#ifndef PROJECT_CONF_H_
-#define PROJECT_CONF_H_
+#include "contiki.h"
+/* #include "lib/sensors.h" */
+#include "dev/dc-vdc-sensor.h"
 
+const struct sensors_sensor dc_vdc_sensor;
 
-#define NETSTACK_CONF_MAC      nullmac_driver
-/* Can see other channels. Interesting. */
-/* #define NETSTACK_CONF_MAC      csma_driver */
-#define NETSTACK_CONF_RDC      stub_rdc_driver
+/*
+ * vdc contains 3 parameters
+ * vdc[0] VGRID
+ * vdc[1] SLOPE
+ * vdc[2] PMAX
+ */
 
+uint32_t volatile vdc[3] = { 18, 1, 100 };
 
-#endif /* PROJECT_CONF_H_ */
+static int
+value(int type)
+{
+  switch(type) {
+  case 0:
+    return vdc[0];
+
+  case 1:
+    return vdc[1];
+
+  case 2:
+    return vdc[2];
+  }
+  return -1;
+}
+static int
+configure(int type, int c)
+{
+  switch(type) {
+  case 0:
+    if((c >= 0) && (c <= 25)) {
+      vdc[0] = c;
+      return 0;
+    } else {
+      return 1;
+    }
+
+  case 1:
+    vdc[1] = c;
+    return 0;
+
+  case 2:
+    vdc[2] = c;
+    return 0;
+  }
+  return 1;
+}
+static int
+status(int type)
+{
+  return 1;
+}
+SENSORS_SENSOR(dc_vdc_sensor, "vdc sensors", value, configure, status);
+

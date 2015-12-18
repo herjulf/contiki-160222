@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Loughborough University - Computer Science
+ * Copyright (c) 2015, ICT/COS/NSLab, KTH Royal Institute of Technology
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,21 +31,16 @@
 
 /**
  * \file
- *         Project specific configuration defines for the sniffer example.
- *
+ *      dcdc/status header file
  * \author
- *         George Oikonomou - <oikonomou@users.sourceforge.net>
- *         Robert Olsson - <robert@radio.sensors.com>
+ *      Voravit Tanyingyong <voravit@kth.se>
  */
 
-#ifndef PROJECT_CONF_H_
-#define PROJECT_CONF_H_
+#ifndef DC_STATUS_SENSOR_H
+#define DC_STATUS_SENSOR_H
 
+#include "lib/sensors.h"
 
-#define NETSTACK_CONF_MAC      nullmac_driver
-/* Can see other channels. Interesting. */
-/* #define NETSTACK_CONF_MAC      csma_driver */
-#define NETSTACK_CONF_RDC      stub_rdc_driver
+extern const struct sensors_sensor dc_status_sensor;
 
-
-#endif /* PROJECT_CONF_H_ */
+#endif /* DC_STATUS_SENSOR_H */

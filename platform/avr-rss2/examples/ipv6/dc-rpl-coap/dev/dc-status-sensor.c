@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Loughborough University - Computer Science
+ * Copyright (c) 2015, ICT/COS/NSLab, KTH Royal Institute of Technology
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,21 +31,54 @@
 
 /**
  * \file
- *         Project specific configuration defines for the sniffer example.
- *
+ *      dcdc/status read-only parameters for power monitoring
  * \author
- *         George Oikonomou - <oikonomou@users.sourceforge.net>
- *         Robert Olsson - <robert@radio.sensors.com>
+ *      Voravit Tanyingyong <voravit@kth.se>
  */
 
-#ifndef PROJECT_CONF_H_
-#define PROJECT_CONF_H_
+#include "contiki.h"
+/* #include "lib/sensors.h" */
+#include "dev/dc-status-sensor.h"
 
+const struct sensors_sensor dc_status_sensor;
 
-#define NETSTACK_CONF_MAC      nullmac_driver
-/* Can see other channels. Interesting. */
-/* #define NETSTACK_CONF_MAC      csma_driver */
-#define NETSTACK_CONF_RDC      stub_rdc_driver
+/*
+ * Status contains 4 parameters
+ * status[0] VOUT
+ * status[1] VIN
+ * status[2] IOUT
+ * status[3] IIN
+ */
 
+uint32_t volatile s[4] = { 18, 20, 1, 2 };
 
-#endif /* PROJECT_CONF_H_ */
+static int
+value(int type)
+{
+  switch(type) {
+  case 0:
+    return s[0];
+
+  case 1:
+    return s[1];
+
+  case 2:
+    return s[2];
+
+  case 3:
+    return s[3];
+  }
+  return -1;
+}
+static int
+configure(int type, int c)
+{
+  return 0;
+}
+static int
+status(int type)
+{
+  return 1;
+}
+SENSORS_SENSOR(dc_status_sensor, "DC status sensors", value, configure, status);
+

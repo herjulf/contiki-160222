@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Loughborough University - Computer Science
+ * Copyright (c) 2015, ICT/COS/NSLab, KTH Royal Institute of Technology
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,21 +31,63 @@
 
 /**
  * \file
- *         Project specific configuration defines for the sniffer example.
- *
+ *      dcdc/hwcfg for DC-DC converter hardware configuration
  * \author
- *         George Oikonomou - <oikonomou@users.sourceforge.net>
- *         Robert Olsson - <robert@radio.sensors.com>
+ *      Voravit Tanyingyong <voravit@kth.se>
  */
 
-#ifndef PROJECT_CONF_H_
-#define PROJECT_CONF_H_
+#include "contiki.h"
+/* #include "lib/sensors.h" */
+#include "dev/dc-hw-sensor.h"
 
+const struct sensors_sensor dc_hw_sensor;
 
-#define NETSTACK_CONF_MAC      nullmac_driver
-/* Can see other channels. Interesting. */
-/* #define NETSTACK_CONF_MAC      csma_driver */
-#define NETSTACK_CONF_RDC      stub_rdc_driver
+/*
+ * hw contains 2 parameters
+ * hw[0] VMAX
+ * hw[1] IMAX
+ */
 
+uint32_t volatile hw[2] = { 25, 6 };
 
-#endif /* PROJECT_CONF_H_ */
+static int
+value(int type)
+{
+  switch(type) {
+  case 0:
+    return hw[0];
+
+  case 1:
+    return hw[1];
+  }
+  return -1;
+}
+static int
+configure(int type, int c)
+{
+  switch(type) {
+  case 0:
+    if((c >= 0) && (c <= 25)) {
+      hw[0] = c;
+      return 0;
+    } else {
+      return 1;
+    }
+
+  case 1:
+    if((c >= 0) && (c <= 6)) {
+      hw[1] = c;
+      return 0;
+    } else {
+      return 0;
+    }
+  }
+  return 1;
+}
+static int
+status(int type)
+{
+  return 1;
+}
+SENSORS_SENSOR(dc_hw_sensor, "hw sensors", value, configure, status);
+
