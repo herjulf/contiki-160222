@@ -26,6 +26,7 @@ before_script:
   ## Install avr toolchain
   ## OLD: - sudo apt-get -qq install gcc-avr avr-libc
   ## We need support for later avr MCU's
+  ## Test AVR
 
  export PREFIX=/usr/local/avr
   export PATH=$PREFIX/bin:$PATH
