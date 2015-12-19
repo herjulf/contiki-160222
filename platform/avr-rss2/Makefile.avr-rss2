@@ -20,6 +20,7 @@ ifdef $(MCU)
 MCU=$(MCU)
 else
 MCU=atmega256rfr2
+BOOTLOADER_START = 0x3E000
 endif
 
 AVRDUDE_PROGRAMMER=jtag2
