@@ -75,7 +75,7 @@ Contiki build TARGET
 make TARGET=avr-rss2
 
 For AtMega128RFA1 boards:
-make TARGET=avr-rss2 MCU=atmega128rfa1  BOOTLOADER_START=0x1F800
+make TARGET=avr-rss2 MCU=atmega128rfa1
 
 Flashing
 --------
@@ -117,9 +117,17 @@ platform/avr-rss2/examples/hello-sensors/
 This example shows the sensd data encoding. But UDP using 6lowpan.
 platform/avr-rss2/examles/ipv6/rpl-udp-report/
 
+Regressions tests
+-----------------
+Travis compile regression for platform: 
+regression-tests/23-compile-avr
 
-Approvals
----------
+Port adds newer version of avr-gcc compiler (4.9.2), to support 
+testing of newwr Atemel MCU as Atmega256RFR2. Work by Atis Elsts 
+
+
+Board approvals
+---------------
 Summary: 
 * R&TTE 73/23/EEC, 89/336/EEC and 99/5/EC
 * Safety: EN 60950-1:2006 + A12: 2011
