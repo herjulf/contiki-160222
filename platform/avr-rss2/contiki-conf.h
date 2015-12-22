@@ -58,23 +58,23 @@
 
 #ifndef NETSTACK_CONF_MAC
 #define NETSTACK_CONF_MAC     csma_driver
-#endif 
+#endif
 
 #ifndef NETSTACK_CONF_RDC
 #define NETSTACK_CONF_RDC     contikimac_driver
-#endif 
+#endif
 
 #ifndef NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE
 #define NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE 8
-#endif 
+#endif
 
 #ifndef NETSTACK_CONF_FRAMER
 #if NETSTACK_CONF_WITH_IPV6
 #define NETSTACK_CONF_FRAMER  contikimac_framer
-#else 
+#else
 #define NETSTACK_CONF_FRAMER  framer_802154
-#endif 
-#endif 
+#endif
+#endif
 
 #ifndef NETSTACK_CONF_RADIO
 #define NETSTACK_CONF_RADIO   rf230_driver
@@ -95,11 +95,11 @@
  * 125 Hz needs slightly more overhead during the interrupt, as does a 32 bit
  * clock_time_t.
  */
- /* Clock ticks per second */
+/* Clock ticks per second */
 
 #define CLOCK_CONF_SECOND 128
 typedef unsigned long clock_time_t;
-#define CLOCK_LT(a,b)  ((signed long)((a)-(b)) < 0)
+#define CLOCK_LT(a, b)  ((signed long)((a) - (b)) < 0)
 #define INFINITE_TIME 0xffffffff
 /* These routines are not part of the contiki core but can be enabled in cpu/avr/clock.c */
 void clock_delay_msec(uint16_t howlong);
@@ -114,14 +114,14 @@ void clock_adjust_ticks(clock_time_t howmany);
 
 /* Pre-allocated memory for loadable modules heap space (in bytes)*/
 /* Default is 4096. Currently used only when elfloader is present. Not tested on Raven */
-//#define MMEM_CONF_SIZE 256
+/* #define MMEM_CONF_SIZE 256 */
 
 /* Starting address for code received via the codeprop facility. Not tested. */
 typedef unsigned long off_t;
-//#define EEPROMFS_ADDR_CODEPROP 0x8000
+/* #define EEPROMFS_ADDR_CODEPROP 0x8000 */
 
 /* Logging adds 200 bytes to program size. RS232 output slows down webserver. */
-//#define LOG_CONF_ENABLED         1
+/* #define LOG_CONF_ENABLED         1 */
 
 /* RADIOSTATS is used in rf230bb, clock.c and the webserver cgi to report radio usage */
 /* It has less overhead than ENERGEST */
@@ -136,11 +136,10 @@ typedef unsigned short uip_stats_t;
 
 /* Available watchdog timeouts depend on mcu. Default is WDTO_2S. -1 Disables the watchdog. */
 /* AVR Studio simulator tends to reboot due to clocking the WD 8 times too fast */
-//#define WATCHDOG_CONF_TIMEOUT -1
+/* #define WATCHDOG_CONF_TIMEOUT -1 */
 
 /* Debugflow macro, useful for tracing path through mac and radio interrupts */
-//#define DEBUGFLOWSIZE 128
-
+/* #define DEBUGFLOWSIZE 128 */
 
 /* Define MAX_*X_POWER to reduce tx power and ignore weak rx packets for testing a miniature multihop network.
  * Leave undefined for full power and sensitivity.
@@ -151,12 +150,12 @@ typedef unsigned short uip_stats_t;
  * On the RF230 a reduced rx power threshold will not prevent autoack if enabled and requested.
  * These numbers applied to both Raven and Jackdaw give a maximum communication distance of about 15 cm
  * and a 10 meter range to a full-sensitivity RF230 sniffer.
-#define RF230_MAX_TX_POWER 15
-#define RF230_MIN_RX_POWER 30
+ *#define RF230_MAX_TX_POWER 15
+ *#define RF230_MIN_RX_POWER 30
  */
-  /* The rf231 and atmega128rfa1 can use an rssi threshold for triggering rx_busy that saves 0.5ma in rx mode */
+/* The rf231 and atmega128rfa1 can use an rssi threshold for triggering rx_busy that saves 0.5ma in rx mode */
 /* 1 - 15 maps into -90 to -48 dBm; the register is written with RF230_MIN_RX_POWER/6 + 1. Undefine for -100dBm sensitivity */
-//#define RF230_MIN_RX_POWER        0
+/* #define RF230_MIN_RX_POWER        0 */
 
 /* Network setup */
 /* TX routine passes the cca/ack result in the return parameter */
@@ -188,13 +187,13 @@ typedef unsigned short uip_stats_t;
 /* Default is 1 context with prefix aaaa::/64 */
 /* These must agree with all the other nodes or there will be a failure to communicate! */
 #define SICSLOWPAN_CONF_MAX_ADDR_CONTEXTS 1
-#define SICSLOWPAN_CONF_ADDR_CONTEXT_0 {addr_contexts[0].prefix[0]=0xaa;addr_contexts[0].prefix[1]=0xaa;}
-#define SICSLOWPAN_CONF_ADDR_CONTEXT_1 {addr_contexts[1].prefix[0]=0xbb;addr_contexts[1].prefix[1]=0xbb;}
-#define SICSLOWPAN_CONF_ADDR_CONTEXT_2 {addr_contexts[2].prefix[0]=0x20;addr_contexts[2].prefix[1]=0x01;addr_contexts[2].prefix[2]=0x49;addr_contexts[2].prefix[3]=0x78,addr_contexts[2].prefix[4]=0x1d;addr_contexts[2].prefix[5]=0xb1;}
+#define SICSLOWPAN_CONF_ADDR_CONTEXT_0 { addr_contexts[0].prefix[0] = 0xaa; addr_contexts[0].prefix[1] = 0xaa; }
+#define SICSLOWPAN_CONF_ADDR_CONTEXT_1 { addr_contexts[1].prefix[0] = 0xbb; addr_contexts[1].prefix[1] = 0xbb; }
+#define SICSLOWPAN_CONF_ADDR_CONTEXT_2 { addr_contexts[2].prefix[0] = 0x20; addr_contexts[2].prefix[1] = 0x01; addr_contexts[2].prefix[2] = 0x49; addr_contexts[2].prefix[3] = 0x78, addr_contexts[2].prefix[4] = 0x1d; addr_contexts[2].prefix[5] = 0xb1; }
 
 /* Take the default TCP maximum segment size for efficiency and simpler wireshark captures */
 /* Use this to prevent 6LowPAN fragmentation (whether or not fragmentation is enabled) */
-//#define UIP_CONF_TCP_MSS       48
+/* #define UIP_CONF_TCP_MSS       48 */
 
 #define UIP_CONF_IP_FORWARD      0
 #define UIP_CONF_FWCACHE_SIZE    0
@@ -206,7 +205,6 @@ typedef unsigned short uip_stats_t;
 #define UIP_CONF_UDP_CHECKSUMS   1
 #define UIP_CONF_TCP_SPLIT       1
 #define UIP_CONF_DHCP_LIGHT      1
-
 
 #if 0 /* No radio cycling */
 
@@ -248,14 +246,14 @@ typedef unsigned short uip_stats_t;
 #define UIP_CONF_DS6_AADDR_NBU    0
 
 #elif 1  /* Contiki-mac radio cycling */
-//#define NETSTACK_CONF_MAC         nullmac_driver
+/* #define NETSTACK_CONF_MAC         nullmac_driver */
 /* csma needed for burst mode at present. Webserver won't work without it */
-//#define NETSTACK_CONF_MAC         csma_driver
-//#define NETSTACK_CONF_RDC         contikimac_driver
+/* #define NETSTACK_CONF_MAC         csma_driver */
+/* #define NETSTACK_CONF_RDC         contikimac_driver */
 /* Default is two CCA separated by 500 usec */
 
 /* So without the header this needed for RPL mesh to form */
-#define CONTIKIMAC_FRAMER_CONF_SHORTEST_PACKET_SIZE   43-18  //multicast RPL DIS length
+#define CONTIKIMAC_FRAMER_CONF_SHORTEST_PACKET_SIZE   43 - 18  /* multicast RPL DIS length */
 /* Not tested much yet */
 #define CONTIKIMAC_CONF_WITH_PHASE_OPTIMIZATION 0
 #define CONTIKIMAC_CONF_COMPOWER               1
@@ -310,31 +308,31 @@ typedef unsigned short uip_stats_t;
 #define UIP_CONF_DS6_ADDR_NBU     3
 #define UIP_CONF_DS6_MADDR_NBU    0
 #define UIP_CONF_DS6_AADDR_NBU    0
-//Below gives 10% duty cycle, undef for default 5%
-//#define CXMAC_CONF_ON_TIME (RTIMER_ARCH_SECOND / 80)
-//Below gives 50% duty cycle
-//#define CXMAC_CONF_ON_TIME (RTIMER_ARCH_SECOND / 16)
+/* Below gives 10% duty cycle, undef for default 5% */
+/* #define CXMAC_CONF_ON_TIME (RTIMER_ARCH_SECOND / 80) */
+/* Below gives 50% duty cycle */
+/* #define CXMAC_CONF_ON_TIME (RTIMER_ARCH_SECOND / 16) */
 
 #else
-//#error Network configuration not specified!
-#endif   /* Network setup */
+/* #error Network configuration not specified! */
+#endif /* Network setup */
 
 #ifndef QUEUEBUF_CONF_NUM
 #define QUEUEBUF_CONF_NUM         15
 #endif
 
 /* ************************************************************************** */
-//#pragma mark RPL Settings
+/* #pragma mark RPL Settings */
 /* ************************************************************************** */
 #if UIP_CONF_IPV6_RPL
 
 #define UIP_CONF_ROUTER                 1
-#define UIP_CONF_ND6_SEND_RA		    0
+#define UIP_CONF_ND6_SEND_RA        0
 #define UIP_CONF_ND6_REACHABLE_TIME     600000
 #define UIP_CONF_ND6_RETRANS_TIMER      10000
 
 /* For slow slip connections, to prevent buffer overruns */
-//#define UIP_CONF_RECEIVE_WINDOW 300
+/* #define UIP_CONF_RECEIVE_WINDOW 300 */
 #undef UIP_CONF_FWCACHE_SIZE
 #define UIP_CONF_BUFFER_SIZE   600 /*  DHCPv4 packets by ip64 module */
 #define UIP_CONF_FWCACHE_SIZE    30
@@ -350,6 +348,5 @@ typedef unsigned short uip_stats_t;
 #ifndef CC_CONF_INLINE
 #define CC_CONF_INLINE inline
 #endif
-
 
 #endif /* CONTIKI_CONF_H_ */

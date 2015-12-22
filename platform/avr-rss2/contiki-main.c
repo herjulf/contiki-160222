@@ -31,7 +31,6 @@
  * Reworked for avr-rss2 platform.  Robert Olsson <robert@radio-sensors.com>
  */
 
-
 #define PRINTF(FORMAT, args ...) printf_P(PSTR(FORMAT),##args)
 
 #define ANNOUNCE_BOOT 1    /* adds about 600 bytes to program size */
@@ -191,9 +190,9 @@ initialize(void)
   /* Do it my way... */
   UBRR0L = 25;
   UBRR0H = 0;
-  UCSR0A = (1<<U2X0);  /*Double */
+  UCSR0A = (1 << U2X0);  /*Double */
 
-  rs232_set_input(RS232_PORT_0 , serial_line_input_byte) ; 
+  rs232_set_input(RS232_PORT_0, serial_line_input_byte);
 
   clock_init();
 
@@ -279,7 +278,7 @@ initialize(void)
 
   printf("I2C: ");
   i2c_probe();
-  printf("\n");  
+  printf("\n");
 
   i2c_at24mac_read((char *)&addr.u8, 1);
   linkaddr_set_node_addr(&addr);
@@ -316,8 +315,8 @@ initialize(void)
   NETSTACK_NETWORK.init();
 
 #if ANNOUNCE_BOOT
-  PRINTA("MAC=%s, RDC=%s, NETWORK=%s, channel=%-u, check-rate-Hz=%-u, tx-power=%-u\n", NETSTACK_MAC.name, 
-	 NETSTACK_RDC.name, NETSTACK_NETWORK.name, rf230_get_channel(),
+  PRINTA("MAC=%s, RDC=%s, NETWORK=%s, channel=%-u, check-rate-Hz=%-u, tx-power=%-u\n", NETSTACK_MAC.name,
+         NETSTACK_RDC.name, NETSTACK_NETWORK.name, rf230_get_channel(),
          CLOCK_SECOND / (NETSTACK_RDC.channel_check_interval() == 0 ? 1 : NETSTACK_RDC.channel_check_interval()),
          rf230_get_txpower());
 #if UIP_CONF_IPV6_RPL
@@ -447,7 +446,7 @@ main(void)
     watchdog_periodic();
 
     /* Turn off LED's */
-    if(ledtimer_red ) {
+    if(ledtimer_red) {
       if(--ledtimer_red == 0) {
         leds_off(LEDS_RED);
       }
@@ -545,13 +544,13 @@ main(void)
           }
         }
         PRINTF("\nNeighbors [%u max]\n", NBR_TABLE_MAX_NEIGHBORS);
-	j = 0;
+        j = 0;
         for(nbr = nbr_table_head(ds6_neighbors);
             nbr != NULL;
             nbr = nbr_table_next(ds6_neighbors, nbr)) {
           ipaddr_add(&nbr->ipaddr);
           PRINTF("\n");
-	  j++;
+          j++;
         }
         if(!j) {
           PRINTF("  <none>");
