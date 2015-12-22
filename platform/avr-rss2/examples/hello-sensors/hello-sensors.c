@@ -45,6 +45,7 @@
 #include "i2c.h"
 #include "dev/leds.h"
 #include "dev/battery-sensor.h"
+#include "dev/temp-sensor.h"
 #include "dev/temp_mcu-sensor.h"
 #include "dev/light-sensor.h"
 #include "dev/pulse-sensor.h"
@@ -65,6 +66,7 @@ PROCESS_THREAD(hello_sensors_process, ev, data)
 
   PROCESS_BEGIN();
 
+  SENSORS_ACTIVATE(temp_sensor);
   SENSORS_ACTIVATE(battery_sensor);
   SENSORS_ACTIVATE(temp_mcu_sensor);
   SENSORS_ACTIVATE(light_sensor);
@@ -87,7 +89,7 @@ PROCESS_THREAD(hello_sensors_process, ev, data)
   etimer_reset(&et);
 
   /* Read out mote unique 128 bit ID */
-  i2c_at24mac_read(&serial, 0);
+  i2c_at24mac_read((char *) &serial, 0);
  
   printf("Reading sensors---------\n");
 
@@ -95,6 +97,7 @@ PROCESS_THREAD(hello_sensors_process, ev, data)
   for(i=0; i < 15; i++)
     printf("%02x", serial[i]);
   printf("%02x\n", serial[15]);
+  printf("T=%-4.1f\n", ((double) temp_sensor.value(0)));
   printf("V_MCU=%-3.1f\n", ((double) battery_sensor.value(0))/1000.);
   printf("V_IN=%-4.2f\n", adc_read_v_in());
   printf("V_AD1=%-4.2f\n", adc_read_a1());
