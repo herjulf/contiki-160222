@@ -38,50 +38,50 @@
 #include "contiki.h"
 #include "dev/battery-sensor.h"
 #include <util/delay_basic.h>
-#define delay_us( us )   ( _delay_loop_2(1+(us*F_CPU)/4000000UL) )
+#define delay_us(us)   (_delay_loop_2(1 + (us * F_CPU) / 4000000UL))
 
 const struct sensors_sensor battery_sensor;
 
 /* Returns the MCU voltage in mV read from the BATMON MCU register
- * See AtMega chip docs for BATMON details. 
+ * See AtMega chip docs for BATMON details.
  */
 
 static int
 value(int type)
 {
- uint16_t mv;
+  uint16_t mv;
   int i;
   /*  Resolution is 75mV if V>=2.55V; and 50mV if V<=2.45V */
   mv = 3675;
 
-  for(i = 0x1f; 1 ; i--) {
+  for(i = 0x1f; 1; i--) {
 
     BATMON = i;
     delay_us(100);
-    if (BATMON & 0x20) 
+    if(BATMON & 0x20) {
       break;
+    }
 
-    if (i == 0x10) // Range hi or lo 
+    if(i == 0x10) { /* Range hi or lo */
       mv = 2500;
-    if (i > 0x10)
+    }
+    if(i > 0x10) {
       mv -= 75;
-    else
+    } else {
       mv -= 50;
+    }
   }
-  return (int)  ((float) mv);
+  return (int)((float)mv);
 }
-
 static int
 configure(int type, int c)
 {
   return 0;
 }
-
 static int
 status(int type)
 {
   return 1;
 }
-
 SENSORS_SENSOR(battery_sensor, BATTERY_SENSOR, value, configure, status);
 

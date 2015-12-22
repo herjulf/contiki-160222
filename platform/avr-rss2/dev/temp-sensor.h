@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Copyright Robert Olsson / Radio Sensors AB
+ * Copyright (c) 2015, Copyright Per Lindgren
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,15 +29,43 @@
  * This file is part of the Contiki operating system.
  *
  *
- * Author  : Robert Olsson robert@radio-sensors.com
+ * Author  : Per Lindgren
+ * Hacked by: Robert Olsson robert@radio-sensors.com
  * Created : 2015-11-22
  */
 
-#ifndef PULSE_SENSOR_H_
-#define PULSE_SENSOR_H_
+#ifndef TEMP_SENSOR_H_
+#define TEMP_SENSOR_H_
 
 #include "lib/sensors.h"
+#include <sys/clock.h>
+#include "contiki.h"
+#include "rss2.h"
 
-extern const struct sensors_sensor pulse_sensor;
+#define DS18B20_1_PIN OW_BUS_0
+#define DS18B20_1_IN  PIND
+#define DS18B20_1_OUT PORTD
+#define DS18B20_1_DDR DDRD
 
-#endif /* PULSE-SENSOR_H_ */
+#define OW_SET_PIN_LOW()   (DS18B20_1_OUT &= ~(1 << DS18B20_1_PIN))
+#define OW_SET_PIN_HIGH()  (DS18B20_1_OUT |= (1 << DS18B20_1_PIN))
+#define OW_SET_OUTPUT()    (DS18B20_1_DDR |= (1 << DS18B20_1_PIN))
+#define OW_SET_INPUT()     (DS18B20_1_DDR &= ~(1 << DS18B20_1_PIN))
+#define OW_GET_PIN_STATE() ((DS18B20_1_IN & (1 << DS18B20_1_PIN)) ? 1 : 0)
+
+#define DS18B20_COMMAND_READ_SCRATCH_PAD 0xBE
+#define DS18B20_COMMAND_START_CONVERSION 0x44
+#define DS18B20_COMMAND_SKIP_ROM 0xCC
+
+/* probe_for_ds18b20 probes for the sensor. Returns 0 on failure, 1 on success
+ * Assumption: only one sensor on the "1-wire bus", on port DS18B20_1_PIN */
+
+extern uint8_t ds18b20_probe(void);
+extern uint8_t  ds18b20_get_temp(double *temp);
+extern uint8_t crc8_ds18b20(uint8_t *buf, uint8_t buf_len);
+
+extern const struct sensors_sensor temp_sensor;
+
+#define TEMP_SENSOR "temp"
+
+#endif /* TEMP_SENSOR_H_ */

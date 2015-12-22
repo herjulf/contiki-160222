@@ -38,56 +38,53 @@
 #include "contiki.h"
 #include "dev/temp_mcu-sensor.h"
 #include <util/delay_basic.h>
-#define delay_us( us )   ( _delay_loop_2(1+(us*F_CPU)/4000000UL) )
+#define delay_us(us)   (_delay_loop_2(1 + (us * F_CPU) / 4000000UL))
 
 const struct sensors_sensor temp_mcu_sensor;
 
 /* Returns the MCU temp in C*10 read from the BATMON MCU register
- * See AtMega chip docs for BATMON details. 
+ * See AtMega chip docs for BATMON details.
  */
 
 static int
 value(int type)
 {
- uint16_t v;
- 
- ADCSRB |= (1<<MUX5);   //this bit buffered till ADMUX written to!
- ADMUX = 0xc9;
- 
- /* ADC on /32 ADC start */
- ADCSRA =  (1<<ADPS2) | (0<<ADPS1) | (1<<ADPS0); 
- ADCSRA |= (1<<ADEN);  /* Enable the ADC */
- 
- while (! (ADCSRB & (1<<AVDDOK)));  /* Wait for AVDD ok */
- while (! (ADCSRB & (1<<REFOK)));  /* Wait for ref ok  */
- 
- ADCSRA |= (1<<ADSC);         //Throwaway conversion
- while 
-   (ADCSRA &( 1<<ADSC) ); 
- 
- ADCSRA |= (1<<ADSC);          //Start conversion
- while 
-   (ADCSRA & (1<<ADSC) ); 
- 
- v = ADC;
- 
- /* Disable the ADC to save power */
- ADCSRA &= ~_BV(ADEN);
- //ADMUX = 0;                //turn off internal vref      
- return (int) ((double) (v * 1.13 - 272.8)*10);
-}
+  uint16_t v;
 
+  ADCSRB |= (1 << MUX5); /* this bit buffered till ADMUX written to! */
+  ADMUX = 0xc9;
+
+  /* ADC on /32 ADC start */
+  ADCSRA = (1 << ADPS2) | (0 << ADPS1) | (1 << ADPS0);
+  ADCSRA |= (1 << ADEN); /* Enable the ADC */
+
+  while(!(ADCSRB & (1 << AVDDOK))) ;  /* Wait for AVDD ok */
+  while(!(ADCSRB & (1 << REFOK))) ;  /* Wait for ref ok  */
+
+  ADCSRA |= (1 << ADSC);      /* Throwaway conversion */
+  while
+  (ADCSRA & (1 << ADSC)) ;
+
+  ADCSRA |= (1 << ADSC);       /* Start conversion */
+  while
+  (ADCSRA & (1 << ADSC)) ;
+
+  v = ADC;
+
+  /* Disable the ADC to save power */
+  ADCSRA &= ~_BV(ADEN);
+  /* ADMUX = 0;                //turn off internal vref */
+  return (int)((double)(v * 1.13 - 272.8) * 10);
+}
 static int
 configure(int type, int c)
 {
   return 0;
 }
-
 static int
 status(int type)
 {
   return 1;
 }
-
 SENSORS_SENSOR(temp_mcu_sensor, TEMP_MCU_SENSOR, value, configure, status);
 

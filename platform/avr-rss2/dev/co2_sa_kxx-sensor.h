@@ -29,7 +29,7 @@
  * This file is part of the Contiki operating system.
  *
  *
- * Authors  : Markus Hidell, Robert Olsson  {mahidell, roolss} @kth.se 
+ * Authors  : Markus Hidell, Robert Olsson  {mahidell, roolss} @kth.se
  * Created : 2015-10-27
  * Updated : $Date: 2010/01/14 20:23:02 $
  *           $Revision: 1.2 $
@@ -46,6 +46,6 @@
 
 extern const struct sensors_sensor co2_sa_kxx_sensor;
 
-#define I2C_CO2SA_ADDR (0x68<<1)
+#define I2C_CO2SA_ADDR (0x68 << 1)
 
 #endif /* CO2_SA_KXX-SENSOR_H_ */

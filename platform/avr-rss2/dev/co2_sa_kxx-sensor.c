@@ -29,7 +29,7 @@
  * This file is part of the Contiki operating system.
  *
  *
- * Authors  : Markus Hidell, Robert Olsson  {mahidell, roolss} @kth.se 
+ * Authors  : Markus Hidell, Robert Olsson  {mahidell, roolss} @kth.se
  * Created : 2015-10-27
  * Updated : $Date: 2010/01/14 20:23:02 $
  *           $Revision: 1.2 $
@@ -56,13 +56,11 @@ status(int type)
 {
   return 0;
 }
-
 static int
 configure(int type, int c)
 {
   return 0;
 }
-
 static int
 value(int var)
 {
@@ -71,10 +69,11 @@ value(int var)
   int16_t res;
 
   res = 0;
-  i2c_start(I2C_CO2SA_ADDR | I2C_WRITE); 
-  if(res)
+  i2c_start(I2C_CO2SA_ADDR | I2C_WRITE);
+  if(res) {
     goto err;
-  
+  }
+
   i2c_write(0x22);
   i2c_write(0x00);
 
@@ -95,30 +94,31 @@ value(int var)
 
   i2c_stop();
 
-  if(res)
+  if(res) {
     goto err;
-  
-  clock_delay_msec(20);
-  
-  res = 0;
-  i2c_start( I2C_CO2SA_ADDR | I2C_READ);
+  }
 
-  if(res)
+  clock_delay_msec(20);
+
+  res = 0;
+  i2c_start(I2C_CO2SA_ADDR | I2C_READ);
+
+  if(res) {
     goto err;
+  }
 
   status = i2c_readAck();
   buf[0] = i2c_readAck();
   buf[1] = i2c_readAck();
-  csum  = i2c_readNak();
+  csum = i2c_readNak();
   i2c_stop();
 
-  val = ((int16_t) (buf[0]<<8)) | buf[1];
+  val = ((int16_t)(buf[0] << 8)) | buf[1];
 
   return val;
 
- err:
+err:
   i2c_stop();
   return 0;
 }
-
 SENSORS_SENSOR(co2_sa_kxx_sensor, "CO2", value, configure, status);

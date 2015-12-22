@@ -30,7 +30,7 @@
 
 /**
  * \file
- *         includes for i2c core functions 
+ *         includes for i2c core functions
  * \author
  *         Robert Olsson <robert@radio-sensors.com>
  */

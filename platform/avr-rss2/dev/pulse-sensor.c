@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Copyright Robert Olsson / Radio Sensors AB  
+ * Copyright (c) 2015, Copyright Robert Olsson / Radio Sensors AB
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,61 +44,63 @@ const struct sensors_sensor pulse_sensor;
 
 uint32_t volatile pc[NP];
 
-/* 
+/*
  * Note interrupt sources can be woken up from sleep mode PWR_SAVE
- * Two interrupt ports, #0 green terminal block. #1 pin header via 
+ * Two interrupt ports, #0 green terminal block. #1 pin header via
  * a comparator.
  */
 
-static void 
+static void
 port_irq_ctrl(uint8_t on)
 {
   if(on) {
 
-    DDRD &=  ~(1<<PD2);
-    PORTD &= ~(1<<PD2);
-    EIMSK = 0; 
-    EICRA |=  0x20;   /* Falling edge INT2 */
-    EIMSK |=  (1<<PD2);  /* Enable interrupt for pin */
-    
-    /* p1 port */
-    DDRD &=  ~(1<<PD3);
-    PORTD &= ~(1<<PD3);
-    EIMSK |=  (1<<PD3);  /* Enable interrupt for pin */
-    EICRA |=      0x80;   /* Falling edge */
-    PCICR |= (1<<PCIE0);  /* And enable irq PCINT 7:0 */
-  }
-  else {
-    EICRA = 0;
-    PORTD |= (1<<PD2);
-    EIMSK &= ~(1<<PD2);    /* Disable interrupt for pin */
+    DDRD &= ~(1 << PD2);
+    PORTD &= ~(1 << PD2);
+    EIMSK = 0;
+    EICRA |= 0x20;    /* Falling edge INT2 */
+    EIMSK |= (1 << PD2);  /* Enable interrupt for pin */
 
-    PORTD |= (1<<PD3);
-    EIMSK &= ~(1<<PD3);    /* Disable interrupt for pin */
+    /* p1 port */
+    DDRD &= ~(1 << PD3);
+    PORTD &= ~(1 << PD3);
+    EIMSK |= (1 << PD3);  /* Enable interrupt for pin */
+    EICRA |= 0x80;        /* Falling edge */
+    PCICR |= (1 << PCIE0);  /* And enable irq PCINT 7:0 */
+  } else {
+    EICRA = 0;
+    PORTD |= (1 << PD2);
+    EIMSK &= ~(1 << PD2);    /* Disable interrupt for pin */
+
+    PORTD |= (1 << PD3);
+    EIMSK &= ~(1 << PD3);    /* Disable interrupt for pin */
   }
 }
-
 ISR(INT2_vect)
 {
-  if( ! (PCICR & (1<<PCIE0)))
+  if(!(PCICR & (1 << PCIE0))) {
     return;
-    pc[0]++;
+  }
+  pc[0]++;
 }
 
 ISR(INT3_vect)
 {
-  if( ! (PCICR & (1<<PCIE0)))
+  if(!(PCICR & (1 << PCIE0))) {
     return;
-    pc[1]++;
+  }
+  pc[1]++;
 }
 /*---------------------------------------------------------------------------*/
 static int
 value(int type)
 {
-  if(type == 0) 
-    return (int) pc[0];
-  if(type == 1) 
-    return (int) pc[1];
+  if(type == 0) {
+    return (int)pc[0];
+  }
+  if(type == 1) {
+    return (int)pc[1];
+  }
   return -1;
 }
 /*---------------------------------------------------------------------------*/

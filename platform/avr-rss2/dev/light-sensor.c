@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Copyright Robert Olsson 
+ * Copyright (c) 2015, Copyright Robert Olsson
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,6 @@
  *
  */
 
-
 #include "contiki.h"
 #include "lib/sensors.h"
 #include "dev/light-sensor.h"
@@ -55,10 +54,10 @@ status(int type)
 static int
 configure(int type, int c)
 {
-    DDRF &= ~(1<<A3); /* Light sensor */
-    DDRF &= ~(1<<A3_PWR);
+  DDRF &= ~(1 << A3); /* Light sensor */
+  DDRF &= ~(1 << A3_PWR);
 
-    PORTF |= (1<<A3_PWR); /* Light sensor */
+  PORTF |= (1 << A3_PWR); /* Light sensor */
   return 0;
 }
 /*---------------------------------------------------------------------------*/
