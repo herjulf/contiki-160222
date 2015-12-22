@@ -24,7 +24,7 @@ Boards Features
 * 32kHz RTC xtal
 * Comparator chip and input. 
 * SW FET, (relay) for power on/off of sensors.
-* DC input up to 25V.
+* DC input via LDO up to 25V.
 * Standard. 6-pin TTL-USB header for FTDI cable for UART.
 * PCB formfactor for cheap project box G.40X IP54
 * Power/current:
@@ -123,7 +123,7 @@ Travis compile regression for platform:
 regression-tests/23-compile-avr
 
 Port adds newer version of avr-gcc compiler (4.9.2), to support 
-testing of newwr Atemel MCU as Atmega256RFR2. Work by Atis Elsts 
+testing of newwr Atmel MCU as Atmega256RFR2. Work by Atis Elsts 
 
 
 Board approvals
