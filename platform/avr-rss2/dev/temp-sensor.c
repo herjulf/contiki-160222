@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Copyright Per Lindgren
+ * Copyright (c) 2015, Copyright Per Lindgren <per.o.lindgren@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * This file is part of the Contiki operating system.
  *
  *
- * Author  : Per Lindgren
+ * Author   : Per Lindgren <per.o.lindgren@gmail.com>
  * Hacked by: Robert Olsson robert@radio-sensors.com
  * Created : 2015-11-22
  */
