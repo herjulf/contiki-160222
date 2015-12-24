@@ -270,9 +270,13 @@ value(int type)
   double t;
   int ret;
   ret = ds18b20_get_temp(&t);
+  
+  /* Return temp multiplied by 100 for two decimals */
+  if(ret) 
+    return (int) (t * 100);
 
-  printf("Temp=%f\n", t);
-  return ret;
+  /* Error return largest negative value */
+  return 0x8000;
 }
 static int
 configure(int type, int c)

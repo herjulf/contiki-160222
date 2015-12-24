@@ -97,7 +97,7 @@ PROCESS_THREAD(hello_sensors_process, ev, data)
   for(i=0; i < 15; i++)
     printf("%02x", serial[i]);
   printf("%02x\n", serial[15]);
-  printf("T=%-4.1f\n", ((double) temp_sensor.value(0)));
+  printf("T=%-5.2f\n", ((double) temp_sensor.value(0)/100.));
   printf("V_MCU=%-3.1f\n", ((double) battery_sensor.value(0))/1000.);
   printf("V_IN=%-4.2f\n", adc_read_v_in());
   printf("V_AD1=%-4.2f\n", adc_read_a1());
