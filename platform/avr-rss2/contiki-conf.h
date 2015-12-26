@@ -33,9 +33,7 @@
 
 /**
  * \file
- *         Configuration for Atmel ATmega128rfa1
- * \author
- *         David Kopf <dak664@embarqmail.com>
+ *         Configuration for RSS2 (radio-sensors.com) platform
  */
 
 #ifndef CONTIKI_CONF_H_
@@ -253,7 +251,7 @@ typedef unsigned short uip_stats_t;
 /* Default is two CCA separated by 500 usec */
 
 /* So without the header this needed for RPL mesh to form */
-#define CONTIKIMAC_FRAMER_CONF_SHORTEST_PACKET_SIZE   43 - 18  /* multicast RPL DIS length */
+#define CONTIKIMAC_FRAMER_CONF_SHORTEST_PACKET_SIZE   (43 - 18)  /* multicast RPL DIS length */
 /* Not tested much yet */
 #define CONTIKIMAC_CONF_WITH_PHASE_OPTIMIZATION 0
 #define CONTIKIMAC_CONF_COMPOWER               1
