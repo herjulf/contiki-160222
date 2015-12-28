@@ -49,6 +49,12 @@
 #include "dev/co2_sa_kxx-sensor.h"
 #endif
 
+#ifndef PERIOD
+#define PERIOD 10
+#endif
+
+#define REPORT_INTERVAL	 (PERIOD * CLOCK_SECOND)
+
 #define DEBUG DEBUG_PRINT
 #include "uip-debug.h"
 
@@ -59,10 +65,17 @@ static struct psock ps;
 static uint8_t out_buf[MAX_PAYLOAD_LEN];
 static char  in_buffer[MAX_PAYLOAD_LEN];
 static int i;
+static int send_now;
+static clock_time_t report_interval = REPORT_INTERVAL;
 static uint8_t state;
 static uip_ipaddr_t addr;
-static struct timer t;
-static struct etimer et;
+static struct timer t, t1;
+static struct etimer et, et1;
+
+PROCESS(sensd_client_process, "sensd TCP client process");
+PROCESS(report_timer_process, "report pacemaker");
+AUTOSTART_PROCESSES
+(&sensd_client_process,&report_timer_process);
 
 static int
 do_report(void)
@@ -110,25 +123,38 @@ set_global_address(void)
 
 static int handle_connection(struct psock *p, long ts) {
   PSOCK_BEGIN(p);
-  do_report();
-  leds_on(LEDS_YELLOW);
-  PSOCK_SEND(p, (const uint8_t *)  out_buf, strlen((const char *) out_buf));
+  if(send_now) {
+    do_report();
+    leds_on(LEDS_YELLOW);
+    PSOCK_SEND(p, (const uint8_t *)  out_buf, strlen((const char *) out_buf));
+    send_now = 0;
+  }
   PSOCK_END(p);
 }
 
-PROCESS(sensd_client_process, "sensd TCP client process");
-AUTOSTART_PROCESSES(&sensd_client_process);
+PROCESS_THREAD(report_timer_process, ev, data) {
+  PROCESS_BEGIN();
+  while(1) {
+    timer_set(&t1, report_interval);
+    etimer_set(&et1, timer_remaining(&t1));	
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et1));	
+    send_now = 1;
+    leds_on(LEDS_RED);
+  }
+  PROCESS_END();
+}
 
 PROCESS_THREAD(sensd_client_process, ev, data) {
   PROCESS_BEGIN();
+
   set_global_address();
   leds_init();
   print_local_addresses();
   printf("Starting TCP client on port=%d\n", PORT);
 
   /* Set server address. typically sensd */
-  uip_ip6addr(&addr, 0xfe80, 0, 0, 0, 0xfec2, 0x3d00, 1, 0x63ae);
-  //uip_ip6addr(&addr, 0x0000, 0, 0, 0, 0, 0xffff, 0xc0a8, 0x0201);
+  //uip_ip6addr(&addr, 0xfe80, 0, 0, 0, 0xfec2, 0x3d00, 1, 0x63ae);
+  uip_ip6addr(&addr, 0x0000, 0, 0, 0, 0, 0xffff, 0xc0a8, 0x0201);
   //uip_ip6addr(&addr, 0x0000, 0, 0, 0, 0, 0xffff, 0xc0a8, 0x0255);
 
   random_init(50);
@@ -152,7 +178,6 @@ PROCESS_THREAD(sensd_client_process, ev, data) {
       printf(" Success\n");
       PSOCK_INIT(&ps, (uint8_t *)in_buffer, sizeof(in_buffer));
       do {
-	leds_on(LEDS_YELLOW);
 	handle_connection(&ps, clock_seconds());
 	PROCESS_WAIT_EVENT_UNTIL(ev == tcpip_event);
       } while(!(uip_closed() || uip_aborted() || uip_timedout()));
