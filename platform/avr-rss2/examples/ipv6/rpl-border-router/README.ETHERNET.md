@@ -1,4 +1,7 @@
-Document version: 2015-08-31
+Document version: 2015-12-29
+
+HOWTO connect the Microchip enc28j60 module
+===========================================
 
 It's possible to to add Ethernet to most microcontrollers having a SPI inter-
 face. In the Atmel world the SPI pins are used for the ISP programming. Usually 
@@ -7,6 +10,10 @@ a 6-pin header. Named MOSI, MISO, SCK, CS (Chup Select), Vcc, GND
 One popular Ethernet chip is Microchip ENC28J60. It been used for quite some 
 time and is easy to program and are also supported by many platforms and 
 projects. Contiki has files under:
+
+Most focus fon AVR platforms. The SPI is used by Atmel ISP-progammings
+interface. In addition to those pins you to selects a pin for chip
+select (CS).
 
 dev/enc28j60/
 The low-level SPI drives is platform or rather CPU-specific. The avr-rss2
