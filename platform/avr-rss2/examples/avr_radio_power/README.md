@@ -39,7 +39,7 @@ TX with PWR=12 RPC=0x00
 TX with PWR=13 RPC=0x00  
 TX with PWR=14 RPC=0x00  
 TX with PWR=15 RPC=0x00  
-RX with RPC=0x00         13.43   (RX)  
+RX with RPC=0x00                          13.43   (RX)  
   
 -------------------------------------------------  
 TX with PWR=0 RPC=0xff   14.63 mA  (MAX TX-pwr)  
@@ -58,7 +58,7 @@ TX with PWR=12 RPC=0xff
 TX with PWR=13 RPC=0xff  
 TX with PWR=14 RPC=0xff  
 TX with PWR=15 RPC=0xff  
-RX with RPC=0xFF           7.11   (RX)  
+RX with RPC=0xFF                         7.11   (RX)  
   
 RX radio off               0.001 mA  
 
