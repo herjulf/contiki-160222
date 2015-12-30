@@ -432,12 +432,19 @@ rf230_waitidle(void)
 }
 
 /* Set reduced power consumption for AtMegaXXXRFR2 MCU's. See AT02594 */
-#if  defined(__AVR_ATmega256RFR2__)  
-uint8_t rf230_rpc_write(uint8_t data)
+
+static uint8_t rpc = 0xFF; /* Default max power save */
+void 
+rf230_set_rpc(uint8_t data)
 {
-  hal_subregister_write(SR_TRX_RPC, data);    
+  rpc = data;
 }
-#endif
+
+uint8_t
+rf230_get_rpc(void)
+{
+  return rpc;
+}
 
 /** \brief  This function will change the current state of the radio
  *          transceiver's internal state machine.
@@ -514,7 +521,7 @@ radio_set_trx_state(uint8_t new_state)
         if (current_state == TRX_OFF){
 
 #if  defined(__AVR_ATmega256RFR2__)  
-	  rf230_rpc_write(0xFF); /* Enable all RPC features */
+	  hal_subregister_write(SR_TRX_RPC, rpc);    /* Enable RPC features */
 #endif
             delay_us(TIME_TRX_OFF_TO_PLL_ACTIVE);
         } else {
@@ -544,7 +551,7 @@ rf230_set_promiscuous_mode(bool isPromiscuous) {
 #if RF230_CONF_AUTOACK
     is_promiscuous = isPromiscuous;
 /* TODO: Figure out when to pass promisc state to 802.15.4 */
-//    radio_set_trx_state(is_promiscuous?RX_ON:RX_AACK_ON);
+    radio_set_trx_state(is_promiscuous?RX_ON:RX_AACK_ON);
 #endif
 }
 
@@ -1392,6 +1399,25 @@ PROCESS_THREAD(rf230_process, ev, data)
     /* Restore interrupts. */
     HAL_LEAVE_CRITICAL_REGION();
     PRINTF("rf230_read: %u bytes lqi %u\n",len,rf230_last_correlation);
+
+    if(is_promiscuous) {
+      uint8_t i;
+      unsigned const char * rxdata = packetbuf_dataptr();
+      /* Print magic */
+      putchar(0xC1);
+      putchar(0x1F);
+      putchar(0xFE);
+      putchar(0x72);
+      /* Print version */
+      putchar(0x01);
+      /* Print CMD == frame */
+      putchar(0x00);
+      putchar(len+3);
+
+      for (i=0;i<len;i++)  putchar(rxdata[i]);
+      printf("\n");
+    }
+
 #if DEBUG>1
      {
         uint8_t i;
