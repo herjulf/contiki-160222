@@ -52,11 +52,11 @@
 #include <avr/sleep.h>
 #include <dev/watchdog.h>
 
-#define TEST_PERIOD 5
+#define TEST_PERIOD 6
 
-int ps = 0;      /* Power-save false */
-uint8_t rpc = 0; /* Reduced Power Control. (RPC) On RFR2 radios */
-char buf[110];
+static int ps = 0;      /* Power-save false */
+static char buf[110];
+static struct etimer et;
 
 PROCESS(power_use_process, "Power use test");
 PROCESS(sleep_process,   "Sleep process");
@@ -72,9 +72,9 @@ broadcast_recv(struct broadcast_conn *c, const linkaddr_t *from)
 static const struct broadcast_callbacks broadcast_call = {broadcast_recv};
 static struct broadcast_conn broadcast;
 
+
 PROCESS_THREAD(power_use_process, ev, data)
 {
-  static struct etimer et;
   static int i, j;
   PROCESS_EXITHANDLER(broadcast_close(&broadcast);)
     PROCESS_BEGIN();
@@ -87,6 +87,9 @@ PROCESS_THREAD(power_use_process, ev, data)
   for(i=0; i < 2; i++) {   /* Loop over min and max rpc settings  */
 
     NETSTACK_RADIO.off(); /* Radio off for rpc change */
+    NETSTACK_RADIO.off();
+    etimer_set(&et, CLOCK_SECOND * 8);
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
     if(i == 0) 
       rf230_set_rpc(0x0); /* Disbable all RPC features */
     else 
@@ -95,7 +98,7 @@ PROCESS_THREAD(power_use_process, ev, data)
 
     /*  Loop over the different TX power settings 0-15  */
     
-    for(j=0; j < 16; j++) {
+    for(j=15; j >= 0; j--) {
       NETSTACK_RADIO.on();
       rf230_set_txpower(j);
       ps = 0;
@@ -112,7 +115,10 @@ PROCESS_THREAD(power_use_process, ev, data)
 	PROCESS_PAUSE();
 	//leds_on(LEDS_RED);
 	}
+      /* Barrier so we can see next run */
       NETSTACK_RADIO.off();
+      etimer_set(&et, CLOCK_SECOND * TEST_PERIOD);
+      PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
     }
 
     /*  RX */

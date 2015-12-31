@@ -75,3 +75,5 @@ References
 ----------
 Atmel application note. AT02594: Smart Reduced Power Consumption  Techniques   
 [Here] (http://www.atmel.com/images/atmel-42356-smart-reduced-power-consumption-techniques_applicationnote_at02594.pdf)
+
+Multimeter UNI-T UT61E with USB-logging.
