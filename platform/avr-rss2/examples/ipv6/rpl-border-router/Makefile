@@ -13,7 +13,7 @@ PROJECT_SOURCEFILES += enc28j60-ip64-driver.c
 
 APPS += ping6
 
-MODULES += dev/enc28j60
+MODULES += dev/enc28j60 core/net/ip64
 
 #Simple built-in webserver is the default.
 #Override with make WITH_WEBSERVER=0 for no webserver.
