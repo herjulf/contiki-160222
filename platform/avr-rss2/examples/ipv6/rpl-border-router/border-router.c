@@ -269,8 +269,9 @@ PT_THREAD(generate_routes(struct httpd_state *s))
 
 #if WEBSERVER_CONF_LOADTIME
   numticks = clock_time() - numticks + 1;
-  ADD(" <i>(%u.%02u sec)</i>",numticks/CLOCK_SECOND,((100*(numticks%CLOCK_SECOND))/CLOCK_SECOND));
+  ADD(" <i>(%lu.%02lu sec)</i>",numticks/CLOCK_SECOND,((100*(numticks%CLOCK_SECOND))/CLOCK_SECOND));
 #endif
+
 
   SEND_STRING(&s->sout, buf);
   SEND_STRING(&s->sout, BOTTOM);
@@ -371,6 +372,7 @@ PROCESS_THREAD(border_router_process, ev, data)
 /* Derived from link local (MAC) address */
   uip_ip6addr(&ipaddr, 0xaaaa, 0, 0, 0, 0, 0, 0, 0);
   set_prefix_64(&ipaddr);
+  print_local_addresses();
 
   while(1) {
     PROCESS_YIELD();

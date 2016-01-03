@@ -44,10 +44,5 @@ include $(CONTIKIAVR)/radio/Makefile.radio
 
 MODULES += core/net/mac core/net core/net/mac/sicslowmac core/net/mac/contikimac core/net/llsec 
 
-# Candidate for global makefile
-ifeq ($(CONTIKI_WITH_RIME),1)
-else
-MODULES += core/net/ip64
-endif
 
 

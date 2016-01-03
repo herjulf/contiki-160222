@@ -117,6 +117,9 @@ platform/avr-rss2/examples/hello-sensors/
 This example shows the sensd data encoding. But UDP using 6lowpan.
 platform/avr-rss2/examles/ipv6/rpl-udp-report/
 
+NAT ip64 ethernet GW based on Contiki core/net/ip64 code 
+platform/avr-rss2/examples/ipv6/rpl-border-router/
+
 Regressions tests
 -----------------
 Travis compile regression for platform: 
