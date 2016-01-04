@@ -46,6 +46,16 @@ import se.sics.cooja.interfaces.Mote2MoteRelations;
 import se.sics.cooja.interfaces.MoteAttributes;
 import se.sics.cooja.interfaces.Position;
 import se.sics.cooja.interfaces.RimeAddress;
+import se.sics.cooja.GUI;
+
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
+import java.io.File;
+import java.net.URL;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * RSS2 (Radio-Sensors.com) mote with AtMega256RFR2 emulated in Avrora.
@@ -69,6 +79,24 @@ public class RSS2MoteType extends AvroraMoteType {
     RSS2Mote mote = new RSS2Mote(simulation, this);
     mote.initMote();
     return mote;
+  }
+
+  public Icon getMoteTypeIcon() {
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    URL imageURL = this.getClass().getClassLoader().getResource("images/rss2.jpg");
+    Image image = toolkit.getImage(imageURL);
+    MediaTracker tracker = new MediaTracker(GUI.getTopParentContainer());
+    tracker.addImage(image, 1);
+    try {
+      tracker.waitForAll();
+    } catch (InterruptedException ex) {
+    }
+    if (image.getHeight(GUI.getTopParentContainer()) > 0 && image.getWidth(GUI.getTopParentContainer()) > 0) {
+      image = image.getScaledInstance((200*image.getWidth(GUI.getTopParentContainer())/image.getHeight(GUI.getTopParentContainer())), 200, Image.SCALE_DEFAULT);
+      return new ImageIcon(image);
+    }
+
+    return null;
   }
 
   /* Note the ADC and Debugger interfaces are also an extension of Clock and
