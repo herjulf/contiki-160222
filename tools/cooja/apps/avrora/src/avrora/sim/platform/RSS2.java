@@ -49,7 +49,7 @@ import avrora.sim.types.SingleSimulation;
  * The <code>RSS2</code> class is an implementation of the <code>Platform</code> interface that represents
  * both a specific microcontroller and the devices connected to it. This implementation uses the RSS2 (Radio-Sensors.com) sensor board.
  *
- * @author Ben L. Titzer, Daniel Lee, David Kopf, Atis Elsts
+ * @author Ben L. Titzer, Daniel Lee, David Kopf, Atis Elsts, Robert Olsson
  */
 public class RSS2 extends Platform {
 
@@ -96,17 +96,15 @@ public class RSS2 extends Platform {
      */
     protected void addDevices() {
         LED red = new LED(sim, Terminal.COLOR_RED, "Red");
-        LED green = new LED(sim, Terminal.COLOR_GREEN, "Green");
-        LED blue = new LED(sim, Terminal.COLOR_BLUE, "Blue");
+        LED yellow = new LED(sim, Terminal.COLOR_YELLOW, "Yellow");
 
-        ledGroup = new LED.LEDGroup(sim, new LED[] { red, green, blue });
+        ledGroup = new LED.LEDGroup(sim, new LED[] { red, yellow});
         addDevice("leds", ledGroup);
 
         AtmelMicrocontroller amcu = (AtmelMicrocontroller)mcu;
 
-        mcu.getPin("PD5").connectOutput(blue);
-        mcu.getPin("PD6").connectOutput(green);
-        mcu.getPin("PD7").connectOutput(red);
+        mcu.getPin("PE3").connectOutput(yellow);
+        mcu.getPin("PE4").connectOutput(red);
 
         // install the internal ATmega256RFR2 radio
       //               CC2420Radio radio = new CC2420Radio(mcu, MAIN_HZ * 2);
