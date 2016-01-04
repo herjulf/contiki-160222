@@ -55,9 +55,9 @@ public class ATMega256RFR2 extends ATMegaFamily {
     public static final int _1kb = 1024;
 
     public static final int ATMEGA256RFR2_IOREG_SIZE = 512 - 32;
-    public static final int ATMEGA256RFR2_SRAM_SIZE = 16 * _1kb;
-    public static final int ATMEGA256RFR2_FLASH_SIZE = 128 * _1kb;
-    public static final int ATMEGA256RFR2_EEPROM_SIZE = 4 * _1kb;
+    public static final int ATMEGA256RFR2_SRAM_SIZE = 32 * _1kb;
+    public static final int ATMEGA256RFR2_FLASH_SIZE = 256 * _1kb;
+    public static final int ATMEGA256RFR2_EEPROM_SIZE = 8 * _1kb;
     public static final int ATMEGA256RFR2_NUM_PINS = 65;
     public static final int ATMEGA256RFR2_NUM_INTS = 73;
 
@@ -227,6 +227,7 @@ public class ATMega256RFR2 extends ATMegaFamily {
         rl.addIOReg("BATMON", 0x131);
         rl.addIOReg("VREG_CTRL", 0x130);   
 */
+        rl.addIOReg("BATMON", 0x151);
         rl.addIOReg("IRQ_STATUS", 0x12F);
         rl.addIOReg("IRQ_MASK", 0x12E);
         rl.addIOReg("ANT_DIV", 0x12D);
@@ -243,6 +244,7 @@ public class ATMega256RFR2 extends ATMegaFamily {
         rl.addIOReg("TRX_STATE", 0x122, "TRAC_STATUS[2:0],TRX_CMD[4:0]");
   //      rl.addIOReg("TRX_STATUS", 0x121, "CCA_DONE, CCA_STATUS, TST_STATUS, TRX_STATUS[4:0]");
 
+        rl.addIOReg("TRX_RPC", 0x156);
         rl.addIOReg("AES_KEY", 0x11F);
         rl.addIOReg("AES_STATE", 0x11E);
         rl.addIOReg("AES_STATUS", 0x11D);
