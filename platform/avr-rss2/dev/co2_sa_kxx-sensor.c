@@ -67,6 +67,8 @@ value(int var)
   int val, status;
   uint8_t buf[2], csum;
   int16_t res;
+  (void) status;
+  (void) csum;
 
   res = 0;
   i2c_start(I2C_CO2SA_ADDR | I2C_WRITE);
