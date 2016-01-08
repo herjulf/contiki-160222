@@ -28,9 +28,13 @@
  */
 
 package avrora.sim.radio;
+import avrora.sim.clock.Synchronizer;
 
 import avrora.sim.radio.ATmega128RFA1Radio;
 import avrora.sim.mcu.Microcontroller;
+import avrora.sim.output.SimPrinter;
+import cck.text.StringUtil;
+import cck.util.Arithmetic;
 
 /**
  * The <code>ATmega256RFR2Radio</code> implements a simulation of the internal
@@ -40,6 +44,9 @@ import avrora.sim.mcu.Microcontroller;
  * @author Atis Elsts
  */
 public class ATmega256RFR2Radio extends ATmega128RFA1Radio {
+
+    protected final SimPrinter printer;
+
 
     // Empty implementation for now
     // TODO: implement the changes compared to the base class
@@ -54,5 +61,40 @@ public class ATmega256RFR2Radio extends ATmega128RFA1Radio {
      */
     public ATmega256RFR2Radio(Microcontroller mcu, int xfreq) {
         super(mcu, xfreq);
+        printer = sim.getPrinter("radio.rfr2");
+	if (printer != null) printer.println("RFR2: RESET");
     }
+    
+    
+    private long toCycles(long us) {
+        return us * sim.getClock().getHZ() / 1000000;
+    }
+
+    public static Medium createMedium(Synchronizer synch, Medium.Arbitrator arbitrator) {
+        return new Medium(synch, arbitrator, 250000, 48, 8, 8 * 128);
+    }
+
+    public Medium.Transmitter getTransmitter() {
+	if (printer != null) printer.println("RFR2: getTransmitter");
+        return transmitter;
+    }
+
+    public Medium.Receiver getReceiver() {
+	if (printer != null) printer.println("RFR2: getReceiver");
+        return receiver;
+    }
+
+    public void setMedium(Medium m) {
+	if (printer != null) printer.println("RFR2: setMedium");
+        medium = m;
+        transmitter = new Transmitter(m);
+        receiver = new Receiver(m);
+    }
+
+    public Medium getMedium() {
+	if (printer != null) printer.println("RFR2: getMedium");
+        return medium;
+    }
+
 }
+
