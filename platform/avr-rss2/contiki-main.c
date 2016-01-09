@@ -123,6 +123,8 @@ rtimercycle(void)
 #endif
 
 uint16_t ledtimer_red, ledtimer_yellow;
+uint16_t i2c_probed; /* i2c devices we have probed */
+
 
 /*-------------------------------------------------------------------------*/
 /*----------------------Configuration of the .elf file---------------------*/
@@ -272,15 +274,19 @@ initialize(void)
 
   linkaddr_t addr;
 
-  if(params_get_eui64(addr.u8)) {
-    PRINTA("Random EUI64 address generated\n");
+  printf("I2C: ");
+  i2c_probed = i2c_probe();
+  printf("\n");
+  
+  if( i2c_probed & I2C_AT24MAC ) {
+    i2c_at24mac_read((char *)&addr.u8, 1);
+  }
+  else {
+    if(params_get_eui64(addr.u8)) {
+      PRINTA("Random EUI64 address generated\n");
+    }
   }
 
-  printf("I2C: ");
-  i2c_probe();
-  printf("\n");
-
-  i2c_at24mac_read((char *)&addr.u8, 1);
   linkaddr_set_node_addr(&addr);
   /* memcpy(&uip_lladdr.addr, &addr.u8, sizeof(linkaddr_t)); */
 
@@ -363,7 +369,6 @@ initialize(void)
 /*  uip_ds6_prefix_add(&ipaddr,64,0); */
   }
 #endif
-
 /*--------------------------Announce the configuration---------------------*/
 #if ANNOUNCE_BOOT
 #if AVR_WEBSERVER
@@ -407,6 +412,8 @@ initialize(void)
   ledtimer_red = 1000;
   leds_on(LEDS_RED);
 }
+
+
 #if ROUTES && NETSTACK_CONF_WITH_IPV6
 static void
 ipaddr_add(const uip_ipaddr_t *addr)

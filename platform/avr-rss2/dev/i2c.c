@@ -165,25 +165,30 @@ i2c_at24mac_read(char *buf, uint8_t eui64)
     i2c_read_mem(I2C_AT24MAC_ADDR, 0x80, (uint8_t *)buf, 16);
   }
 }
-void
+
+uint16_t
 i2c_probe(void)
 {
   int p = 0;
   const char *del = ",";
-
+  uint16_t probed = 0;
   watchdog_periodic();
   if(!i2c_start(I2C_AT24MAC_ADDR)) {
     i2c_stop();
+    probed |= I2C_AT24MAC;
     print_delim(p++, "AT24MAC", del);
   }
   watchdog_periodic();
   if(!i2c_start(I2C_SHT2X_ADDR)) {
     i2c_stop();
+    probed |= I2C_SHT2X;
     print_delim(p++, "SHT2X", del);
   }
   watchdog_periodic();
   if(!i2c_start(I2C_CO2SA_ADDR)) {
     i2c_stop();
+    probed |= I2C_CO2SA;
     print_delim(p++, "CO2SA", del);
   }
+  return probed;
 }
