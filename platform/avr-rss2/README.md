@@ -1,8 +1,9 @@
 Getting Started with Contiki using avr-rss2
 ===========================================
 This guide's aim is to help you start using Contiki for RSS2 boards
-The platform supports two different RSS2 boards:
+The platform supports different AtMega-RF boards:
 
+* Based on MCU AtMega128RFR2
 * Based on MCU AtMega256RFR2
 * Based on MCU AtMega128RFA1 
 
@@ -73,6 +74,9 @@ Goes here
 Contiki build TARGET
 --------------------
 make TARGET=avr-rss2
+
+For AtMega128RFR2 boards:
+make TARGET=avr-rss2 MCU=atmega128rfr2
 
 For AtMega128RFA1 boards:
 make TARGET=avr-rss2 MCU=atmega128rfa1
@@ -148,14 +152,13 @@ countries.
 
 References
 ----------
-AtMega256RFR2 chip documentaion. Available via Atmel.
+AtMega64/128/256/RFR2 chip documentation available via Atmel.
 Schematics and boards description. Available via Radio-Senors
-Smart Reduced Power Consumption Techniques. AT02594. Available via Atmel.
+Smart Reduced Power Consumption Techniques. AT02594 available via Atmel.
 
 ToDo
 -----
 API for radio power saving settings introduced Atmels app note AT02594. 
-API for pulse input, P0, P1 (Comparator)
 Also function for the desensitizing RPC resister.
 
 Vendor info

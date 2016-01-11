@@ -239,7 +239,7 @@
  *       that the source code can directly use.
  * \{
  */
-#if defined(__AVR_ATmega128RFA1__) || defined(__AVR_ATmega256RFR2__)
+#if defined(__AVR_ATmega128RFA1__) || defined(__AVR_ATmega128RFR2__)  || defined(__AVR_ATmega256RFR2__) 
 
 #define hal_set_rst_low( )    ( TRXPR &= ~( 1 << TRXRST ) ) /**< This macro pulls the RST pin low. */
 #define hal_set_rst_high( )   ( TRXPR |= ( 1 << TRXRST ) ) /**< This macro pulls the RST pin high. */
@@ -373,7 +373,7 @@ typedef struct{
 void hal_init( void );
 
 /* Hack for atmega128rfa1 with integrated radio. Access registers directly, not through SPI */
-#if defined(__AVR_ATmega128RFA1__) || defined(__AVR_ATmega256RFR2__)
+#if defined(__AVR_ATmega128RFA1__) || defined(__AVR_ATmega128RFR2__) || defined(__AVR_ATmega256RFR2__)
 //#define hal_register_read(address) _SFR_MEM8((uint16_t)address)
 #define hal_register_read(address) address
 uint8_t hal_subregister_read( uint16_t address, uint8_t mask, uint8_t position );
