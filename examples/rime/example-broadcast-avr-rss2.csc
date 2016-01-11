@@ -28,7 +28,7 @@
       <identifier>mote1</identifier>
       <description>Broadcast example</description>
       <source EXPORT="discard">[CONTIKI_DIR]/examples/rime/example-broadcast.c</source>
-      <commands EXPORT="discard">make example-broadcast.avr-rss2 TARGET=avr-rss2</commands>
+      <commands EXPORT="discard">make example-broadcast.avr-rss2 TARGET=avr-rss2 MCU=atmega128rfr2</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/examples/rime/example-broadcast.avr-rss2</firmware>
       <moteinterface>se.sics.cooja.interfaces.Position</moteinterface>
       <moteinterface>se.sics.cooja.interfaces.RimeAddress</moteinterface>
