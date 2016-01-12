@@ -9,7 +9,7 @@
   <project EXPORT="discard">[CONTIKI_DIR]/tools/cooja/apps/collect-view</project>
   <project EXPORT="discard">/home/user/contikiprojects/sics.se/powertracker</project>
   <simulation>
-    <title>My simulation</title>
+    <title>UDP sink/report simulation</title>
     <randomseed>123456</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
@@ -179,5 +179,21 @@
     <height>392</height>
     <location_x>531</location_x>
     <location_y>413</location_y>
+  </plugin>
+  <plugin>
+    se.sics.cooja.plugins.TimeLine
+    <plugin_config>
+      <mote>0</mote>
+      <mote>1</mote>
+      <showRadioRXTX />
+      <showRadioHW />
+      <split>125</split>
+      <zoomfactor>500.0</zoomfactor>
+    </plugin_config>
+    <width>828</width>
+    <z>0</z>
+    <height>138</height>
+    <location_x>0</location_x>
+    <location_y>414</location_y>
   </plugin>
 </simconf>
