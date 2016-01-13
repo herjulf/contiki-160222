@@ -127,22 +127,6 @@
     <location_y>160</location_y>
   </plugin>
   <plugin>
-    se.sics.cooja.plugins.TimeLine
-    <plugin_config>
-      <mote>0</mote>
-      <mote>1</mote>
-      <showRadioRXTX />
-      <showRadioHW />
-      <showLEDs />
-      <zoomfactor>500.0</zoomfactor>
-    </plugin_config>
-    <width>1669</width>
-    <z>7</z>
-    <height>166</height>
-    <location_x>0</location_x>
-    <location_y>855</location_y>
-  </plugin>
-  <plugin>
     se.sics.cooja.plugins.Notes
     <plugin_config>
       <notes>Enter notes here</notes>
@@ -179,21 +163,5 @@
     <height>392</height>
     <location_x>531</location_x>
     <location_y>413</location_y>
-  </plugin>
-  <plugin>
-    se.sics.cooja.plugins.TimeLine
-    <plugin_config>
-      <mote>0</mote>
-      <mote>1</mote>
-      <showRadioRXTX />
-      <showRadioHW />
-      <split>125</split>
-      <zoomfactor>500.0</zoomfactor>
-    </plugin_config>
-    <width>828</width>
-    <z>0</z>
-    <height>138</height>
-    <location_x>0</location_x>
-    <location_y>414</location_y>
   </plugin>
 </simconf>
