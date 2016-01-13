@@ -47,7 +47,7 @@
       <identifier>mote2</identifier>
       <description>Mote2</description>
       <source EXPORT="discard">[CONTIKI_DIR]/platform/avr-rss2/examples/ipv6/rpl-udp-report/sink.c</source>
-      <commands EXPORT="discard">make sink.avr-rss2 TARGET=avr-rss2</commands>
+      <commands EXPORT="discard">make sink.avr-rss2 TARGET=avr-rss2 MCU=atmega128rfr2</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/platform/avr-rss2/examples/ipv6/rpl-udp-report/sink.avr-rss2</firmware>
       <moteinterface>se.sics.cooja.interfaces.Position</moteinterface>
       <moteinterface>se.sics.cooja.interfaces.RimeAddress</moteinterface>
