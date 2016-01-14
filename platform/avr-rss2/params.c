@@ -52,10 +52,6 @@
 #include "contiki-net.h"
 #include "params.h"
 
-#if WITH_NODE_ID
-uint16_t node_id;
-#endif
-
 #if CONTIKI_CONF_RANDOM_MAC
 extern uint8_t rng_get_uint8(void);
 static void
