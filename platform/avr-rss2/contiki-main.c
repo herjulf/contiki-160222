@@ -287,9 +287,9 @@ initialize(void)
   else {
     char eui64[8];
     printf("Random EUI64 address generated\n");
-    eui64[0] = 0x02;
-    eui64[1] = 0x11; 
-    eui64[2] = 0;
+    eui64[0] = 0xfc; /* Atmels OUI */
+    eui64[1] = 0xc2; 
+    eui64[2] = 0x3d;
     eui64[3] = 0;
     eui64[4] = 0;
     eui64[5] = 0;
