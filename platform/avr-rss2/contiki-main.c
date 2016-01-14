@@ -293,8 +293,8 @@ initialize(void)
     eui64[3] = 0;
     eui64[4] = 0;
     eui64[5] = 0;
-    eui64[6] = node_id & 0xff;
-    eui64[7] = node_id >> 8;
+    eui64[6] = node_id >> 8;
+    eui64[7] = node_id & 0xff;
     linkaddr_set_node_addr(&eui64);
   }
 
