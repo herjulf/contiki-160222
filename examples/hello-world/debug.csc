@@ -28,7 +28,7 @@
       <identifier>mote1</identifier>
       <description>Broadcast example</description>
       <source EXPORT="discard">[CONTIKI_DIR]/examples/hello-world/hello-world.c</source>
-      <commands EXPORT="discard">make hello-world.avr-rss2 TARGET=avr-rss2 </commands>
+      <commands EXPORT="discard">make hello-world.avr-rss2 TARGET=avr-rss2 MCU=atmega128rfr2</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/examples/hello-world/hello-world.avr-rss2</firmware>
       <moteinterface>se.sics.cooja.interfaces.Position</moteinterface>
       <moteinterface>se.sics.cooja.interfaces.RimeAddress</moteinterface>
@@ -48,7 +48,7 @@
       <identifier>mote2</identifier>
       <description>Broadcast example</description>
       <source EXPORT="discard">[CONTIKI_DIR]/examples/hello-world/hello-world.c</source>
-      <commands EXPORT="discard">make hello-world.avr-rss2 TARGET=avr-rss2</commands>
+      <commands EXPORT="discard">make hello-world.avr-rss2 TARGET=avr-rss2 MCU=atmega128rfr2</commands>
       <firmware EXPORT="copy">[CONTIKI_DIR]/examples/hello-world/hello-world.avr-rss2</firmware>
       <moteinterface>se.sics.cooja.interfaces.Position</moteinterface>
       <moteinterface>se.sics.cooja.interfaces.RimeAddress</moteinterface>
@@ -124,22 +124,6 @@
     <height>218</height>
     <location_x>1</location_x>
     <location_y>197</location_y>
-  </plugin>
-  <plugin>
-    se.sics.cooja.plugins.TimeLine
-    <plugin_config>
-      <mote>0</mote>
-      <mote>1</mote>
-      <showRadioRXTX />
-      <showRadioHW />
-      <split>125</split>
-      <zoomfactor>500.0</zoomfactor>
-    </plugin_config>
-    <width>828</width>
-    <z>0</z>
-    <height>138</height>
-    <location_x>0</location_x>
-    <location_y>414</location_y>
   </plugin>
 </simconf>
 
