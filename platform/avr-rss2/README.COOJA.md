@@ -1,16 +1,16 @@
-COOJA for avr-rss2 platform
-============================
+COOJA for the avr-rss2 platform
+================================
 This work updates cooja and avrora to recent MCU platforms with emerging 
 support for the Atmel RFR2 radio.
 
 Documentation
 -------------
-Most of the thinga are convered in documentation availble so there no
+Most of the things are convered in documentation availble so there no
 need to duplicate this. Note this is still work in progress
 
 Project home
 ------------
-https://github.com/herjulf/contiki branch wip/avrora-
+https://github.com/herjulf/contiki branch wip/avrora-rss2
 
 Installation
 ------------
