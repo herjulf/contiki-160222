@@ -34,8 +34,10 @@ Known issues:
 
 TODO
 ----
+* Fix the avrora 256k MCU problem
 * RPC register for R2 radio.
-* Fix 
+* Update energy class.
+
 
 Contributors
 -------------
