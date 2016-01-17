@@ -43,7 +43,7 @@ import java.util.HashMap;
 
 /**
  * The <code>ATMega256RFR2</code> class represents the ATMega256RFR2 microcontroller from Atmel. This
- * microcontroller has 128Kb code, 16KB SRAM, 4KB EEPROM, and a host of internal devices such as
+ * microcontroller has 256Kb code, 32KB SRAM, 8KB EEPROM, and a host of internal devices such as
  * ADC, SPI, timers, and an internal AT86RF231-like 802.15.4 radio.
  *
  * @author Ben L. Titzer
@@ -82,17 +82,17 @@ public class ATMega256RFR2 extends ATMegaFamily {
         "Extended Standby"
     };
 
-    //TODO:power consumption of each mode
+    /* From Table 35.5 in the datasheet, assuming 8 MHz CPU frequency */
     private static final double[] modeAmpere = {
-        0.0075667,
-        0.0033433,
-        0.0009884,
-        0.0001158,
-        0.0001237,
+        0.0045000,
+        0.0008000,
+        0.0008000,
+        0.0000014,
+        0.0000015,
         0.0,
         0.0,
-        0.0002356,
-        0.0002433
+        0.0003100,
+        0.0003100
     };
 
 
@@ -464,6 +464,7 @@ public class ATMega256RFR2 extends ATMegaFamily {
         rl.addIOReg("PING", 0x12);
         rl.addIOReg("PORTF", 0x11);
         rl.addIOReg("DDRF", 0x10);
+
         rl.addIOReg("PINF", 0x0F);
         rl.addIOReg("PORTE", 0x0E);
         rl.addIOReg("DDRE", 0x0D);
@@ -578,10 +579,8 @@ public class ATMega256RFR2 extends ATMegaFamily {
          *@param p the program to load onto the microcontroller @return a <code>Microcontroller</code> instance that represents the specific hardware device with the
          *         program loaded onto it
          */
-        public Microcontroller newMicrocontroller(int id, Simulation sim, ClockDomain cd, Program p) {//current avrora source
+        public Microcontroller newMicrocontroller(int id, Simulation sim, ClockDomain cd, Program p) {
             return new ATMega256RFR2(id, sim, cd, p);
-        //public Microcontroller newMicrocontroller(int id, ClockDomain cd, Program p) {  //old avrora jar
-         //   return new ATMega256RFR2(id, cd, p);
         }
 
     }
