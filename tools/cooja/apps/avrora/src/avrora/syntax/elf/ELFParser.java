@@ -137,7 +137,7 @@ public class ELFParser extends ProgramReader {
                 fis.seek(e.p_offset);
                 byte[] sect = is.read_section(e.p_offset, e.p_filesz);
                 int addr = e.p_paddr;
-                if (addr >= 0x810000) addr = 0x20000 + (addr & 0x0FFFF);
+                if (addr >= 0x810000) addr = 0x40000 + (addr & 0x0FFFF);
                 p.writeProgramBytes(sect, addr);
                 if (e.isExecutable()) disassembleSection(sect, e, p);
             }
@@ -147,7 +147,7 @@ public class ELFParser extends ProgramReader {
 
     private Program createProgram() {
         // Find the dimensions of the program by searching loadable sections.
-        // An .eeprom section is added above 0x20000, forcing at least a 128KB flash image.
+        // An .eeprom section is added above 0x40000, forcing at least a 256KB flash image.
         // Less heap would be wasted if an explicit eeprom section were added to Program.java.
         int minp = Integer.MAX_VALUE;
         int maxp = 0;
@@ -157,8 +157,8 @@ public class ELFParser extends ProgramReader {
               //System.out.println("section " + cntr + " addr, size " + e.p_paddr + " " + e.p_filesz);
                 int start = e.p_paddr;
                 if ((start & 0x800000) != 0) {
-                    //relocate eeprom to end of a 128KB RAM.
-                    start = 0x20000 + (start & 0x0FFFF);
+                    //relocate eeprom to end of a 256KB RAM.
+                    start = 0x40000 + (start & 0x0FFFF);
                 }
                 int end = start + e.p_filesz;
                 if (start < minp) minp = start;

@@ -111,15 +111,15 @@ public abstract class AvroraMote extends AbstractEmulatedMote implements Watchpo
       platform = factory.newPlatform(1, program);
       AtmelMicrocontroller cpu = (AtmelMicrocontroller) platform.getMicrocontroller();
       EEPROM = (EEPROM) cpu.getDevice("eeprom");
-      /* ElfParser saved any eeprom data starting at 0x20000. Transfer that to EEPROM now. */
-      int eepromData = program.program_end - 0x20000;
+      /* ElfParser saved any eeprom data starting at 0x40000. Transfer that to EEPROM now. */
+      int eepromData = program.program_end - 0x40000;
       if (eepromData > 0) {
           byte [] eeprom = EEPROM.getContent();
           if (eepromData > eeprom.length) {
             logger.warn(".eeprom section larger than EEPROM size!");
             eepromData = eeprom.length;
           }
-          while (--eepromData >= 0) eeprom[eepromData] = program.readProgramByte(0x20000 + eepromData);
+          while (--eepromData >= 0) eeprom[eepromData] = program.readProgramByte(0x40000 + eepromData);
       }
       AVRProperties avrProperties = (AVRProperties) cpu.getProperties();
       sim = cpu.getSimulator();
