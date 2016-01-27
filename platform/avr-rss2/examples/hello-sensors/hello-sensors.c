@@ -107,11 +107,11 @@ PROCESS_THREAD(hello_sensors_process, ev, data)
    * Gives a chance to trigger some pulses
    */
 
+    etimer_set(&et, CLOCK_SECOND * 5);
   while(1) {
-    etimer_set(&et, CLOCK_SECOND * 4);
     PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
-    etimer_reset(&et);
     read_values();
+    etimer_reset(&et);
   }
 
   PROCESS_END();
