@@ -330,13 +330,26 @@ PROCESS_THREAD(coap_client_process, ev, data)
         COAP_BLOCKING_REQUEST(&server_ipaddr, REMOTE_PORT, request,
                               client_chunk_handler);
       } /* if (count_get < 10) */
-
 /*---------------------------------------------------------------------------*/
       /* test PUT: vdc and hwcfg on odd and even packet */
       /* every 10th timer we PUT a resource: vdc and hwcfg alternately */
       if(count_get % 10 == 0) {
         /* static char msg[64] = ""; */
         char msg[64] = "";
+
+	/*---------------------------------------------------------------------------*/
+	/* We read CO2 sensor if it is enable */
+	#ifdef CO2
+       	  coap_init_message(request, COAP_TYPE_CON, COAP_GET, 0);
+          coap_set_header_uri_path(request, "/dcdc/co2");
+          PRINTF("GET %d: %s\n", count_get, "/dcdc/co2");
+	  #if PLATFORM_HAS_LEDS
+            leds_on(LEDS_YELLOW);
+	  #endif
+            COAP_BLOCKING_REQUEST(&server_ipaddr, REMOTE_PORT, request,
+                              client_chunk_handler);
+	#endif
+	/*---------------------------------------------------------------------------*/
 
         count_put++;
         coap_init_message(request, COAP_TYPE_CON, COAP_PUT, 0);
@@ -359,6 +372,8 @@ PROCESS_THREAD(coap_client_process, ev, data)
 #endif
         COAP_BLOCKING_REQUEST(&server_ipaddr, REMOTE_PORT, request,
                               client_chunk_handler);
+
+
       }
 
       /* after 2 more timeout we do GET to check the resource new value */
