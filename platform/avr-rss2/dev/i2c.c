@@ -100,6 +100,8 @@ void
 i2c_stop(void)
 {
   TWCR = (1 << TWINT) | (1 << TWSTO) | (1 << TWEN);
+  /* wait until ready */
+  while(TWCR & (1<<TWSTO));
 }
 void
 i2c_write(uint8_t u8data)
