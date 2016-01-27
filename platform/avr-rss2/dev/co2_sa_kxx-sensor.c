@@ -71,7 +71,7 @@ value(int var)
   (void) csum;
 
   res = 0;
-  i2c_start(I2C_CO2SA_ADDR | I2C_WRITE);
+  i2c_start_wait(I2C_CO2SA_ADDR | I2C_WRITE);
   if(res) {
     goto err;
   }
