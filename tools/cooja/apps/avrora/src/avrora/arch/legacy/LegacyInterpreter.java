@@ -904,12 +904,15 @@ public class LegacyInterpreter extends AtmelInterpreter implements LegacyInstrVi
     }
 
     public void visit(LegacyInstr.EICALL i) {
-        nextPC = pc + 2;
-        cyclesConsumed += 4;
+        int tmp_0 = (pc + 2) / 2;
+        pushByte(low(tmp_0));
+        pushByte(high(tmp_0));
+        nextPC = getRegisterWord(RZ) * 2;
+        cyclesConsumed += 3;
     }
 
     public void visit(LegacyInstr.EIJMP i) {
-        nextPC = pc + 2;
+        nextPC = getRegisterWord(RZ) * 2;
         cyclesConsumed += 2;
     }
 
