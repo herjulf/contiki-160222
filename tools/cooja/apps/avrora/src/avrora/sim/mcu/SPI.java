@@ -226,7 +226,7 @@ public class SPI extends AtmelInternalDevice implements SPIDevice, InterruptTabl
 
         final BooleanView _master = RegisterUtil.booleanView(this, MSTR);
         final BooleanView _enabled = RegisterUtil.booleanView(this, SPE);
-        final RegisterView _spr = RegisterUtil.bitRangeView(this, SPR0, SPR1);
+        final RegisterView _spr = new RegisterUtil.BitRangeView(this, (byte)SPR0, (byte)SPR1);
 
         public void write(byte val) {
             if (devicePrinter != null)

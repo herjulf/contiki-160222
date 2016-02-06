@@ -206,8 +206,8 @@ public class ADC extends AtmelInternalDevice {
      */
     protected class MUXRegister extends RWRegister {
 
-        final RegisterView _mux = RegisterUtil.bitRangeView(this, 0, 4);
-        final RegisterView _ref = RegisterUtil.bitRangeView(this, 6, 2);
+        final RegisterView _mux = new RegisterUtil.BitRangeView(this, (byte)0, (byte)4);
+        final RegisterView _ref = new RegisterUtil.BitRangeView(this, (byte)6, (byte)2);
 
         float getReference() {
             if (ioregSize > 64) {
@@ -280,7 +280,8 @@ public class ADC extends AtmelInternalDevice {
         final BooleanView _adfr = RegisterUtil.booleanView(this, 5);//ADATE on attiny, assumes ADTS2:0 = 0 for free running mode
         final BooleanView _adif = RegisterUtil.booleanView(this, 4);
         final BooleanView _adie = RegisterUtil.booleanView(this, 3);
-        final RegisterView _prescaler = RegisterUtil.bitRangeView(this, 0, 2);
+        final RegisterView _prescaler = new RegisterUtil.BitRangeView(this, (byte)0, (byte)2);
+
 
         int cycles = 25;
 

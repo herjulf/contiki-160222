@@ -217,8 +217,8 @@ public abstract class Timer8Bit extends AtmelInternalDevice {
         public static final int CSn1 = 1;
         public static final int CSn0 = 0;
 
-        final RegisterView CSn = RegisterUtil.bitRangeView(this, 0, 2);
-        final RegisterView COMn = RegisterUtil.bitRangeView(this, 4, 5);
+        final RegisterView CSn = new RegisterUtil.BitRangeView(this, (byte)0, (byte)2);
+        final RegisterView COMn = new RegisterUtil.BitRangeView(this, (byte)4, (byte)5);
         final RegisterView WGMn = RegisterUtil.permutedView(this, new byte[] {6, 3});
 
         int mode = -1;
@@ -306,7 +306,7 @@ public abstract class Timer8Bit extends AtmelInternalDevice {
         public static final int CSn1   = 1;
         public static final int CSn0   = 0;
 
-        final RegisterView CSn = RegisterUtil.bitRangeView(this, 0, 2);
+        final RegisterView CSn = new RegisterUtil.BitRangeView(this, (byte)0, (byte)2);
 
         int mode = -1;
         int scale = -1;

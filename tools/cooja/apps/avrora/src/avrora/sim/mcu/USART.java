@@ -458,7 +458,7 @@ public class USART extends AtmelInternalDevice {
     protected class ControlRegisterC extends RWRegister {
 
         final RegisterView _stopBits = RegisterUtil.bitView(this, USBSn);
-        final RegisterView _ucszLow = RegisterUtil.bitRangeView(this, UCSZn0, UCSZn1);
+        final RegisterView _ucszLow = new RegisterUtil.BitRangeView(this, (byte)UCSZn0, (byte)UCSZn1);
         final RegisterView _umsel = RegisterUtil.bitView(this, UMSELn);
 
         public int getFrameSize() {
