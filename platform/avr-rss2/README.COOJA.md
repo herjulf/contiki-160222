@@ -42,3 +42,17 @@ TODO
 Contributors
 -------------
 Atis Elsts,  Voravit Tanyingyong, Robert Olsson
+
+
+Git command -- REMOVE
+---------------------
+git clone https://github.com/herjulf/contiki.git
+cd contiki
+comment out all text entries in .gitattributes
+git reset
+git status
+git reset --hard
+git merge remotes/origin/wip/avrora-rss2
+git submodule update --init
+contiki/tools/mspsim
+ant jar
