@@ -48,6 +48,9 @@
 /* add mock-up code for DC-DC converter */
 /* #include "control.h" */
 /* #include "vdc.h" */
+#ifdef CO2
+#include "dev/co2_sa_kxx-sensor.h"
+#endif
 #include "dev/dc-status-sensor.h"
 #include "dev/dc-vdc-sensor.h"
 #include "dev/dc-hw-sensor.h"
@@ -91,6 +94,9 @@ extern resource_t
 /*  res_sub; */
 /*  res_dc_status_obs; */
 /*  res_dc_status, */
+#ifdef CO2
+  res_dc_co2,
+#endif
   res_dc_status_obs,
   res_dc_vdc,
   res_dc_hwcfg;
@@ -141,6 +147,9 @@ PROCESS_THREAD(coap_server_process, ev, data)
   PROCESS_PAUSE();
 
 /*  SENSORS_ACTIVATE(button_sensor); */
+#ifdef CO2
+  SENSORS_ACTIVATE(co2_sa_kxx_sensor);
+#endif
   SENSORS_ACTIVATE(dc_status_sensor);
   SENSORS_ACTIVATE(dc_vdc_sensor);
   SENSORS_ACTIVATE(dc_hw_sensor);
@@ -190,6 +199,9 @@ PROCESS_THREAD(coap_server_process, ev, data)
 /*  rest_activate_resource(&res_event, "sensors/button"); */
 /*  rest_activate_resource(&res_sub, "test/sub"); */
 /*  rest_activate_resource(&res_b1_sep_b2, "test/b1sepb2"); */
+#ifdef CO2
+  rest_activate_resource(&res_dc_co2, "dcdc/co2");
+#endif
   rest_activate_resource(&res_dc_status_obs, "dcdc/status");
 /*  rest_activate_resource(&res_dc_status, "dcdc/status"); */
   rest_activate_resource(&res_dc_vdc, "dcdc/vdc");

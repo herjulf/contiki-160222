@@ -71,7 +71,7 @@ value(int var)
   (void) csum;
 
   res = 0;
-  i2c_start(I2C_CO2SA_ADDR | I2C_WRITE);
+  i2c_start_wait(I2C_CO2SA_ADDR | I2C_WRITE);
   if(res) {
     goto err;
   }
@@ -109,7 +109,12 @@ value(int var)
     goto err;
   }
 
+
   status = i2c_readAck();
+
+  if(status & 0x01 == 0) 
+    goto err;
+
   buf[0] = i2c_readAck();
   buf[1] = i2c_readAck();
   csum = i2c_readNak();

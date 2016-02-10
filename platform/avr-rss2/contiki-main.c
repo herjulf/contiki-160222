@@ -122,6 +122,8 @@ rtimercycle(void)
 #endif
 #endif
 
+uint16_t node_id; /* Can be set by cooja */
+
 uint16_t ledtimer_red, ledtimer_yellow;
 uint16_t i2c_probed; /* i2c devices we have probed */
 
@@ -280,23 +282,26 @@ initialize(void)
   
   if( i2c_probed & I2C_AT24MAC ) {
     i2c_at24mac_read((char *)&addr.u8, 1);
+    linkaddr_set_node_addr(&addr);
   }
   else {
-    if(params_get_eui64(addr.u8)) {
-      PRINTA("Random EUI64 address generated\n");
-    }
+    char eui64[8];
+    printf("Random EUI64 address generated\n");
+    eui64[0] = 0xfc; /* Atmels OUI */
+    eui64[1] = 0xc2; 
+    eui64[2] = 0x3d;
+    eui64[3] = 0;
+    eui64[4] = 0;
+    eui64[5] = 0;
+    eui64[6] = node_id >> 8;
+    eui64[7] = node_id & 0xff;
+    linkaddr_set_node_addr(&eui64);
   }
 
-  linkaddr_set_node_addr(&addr);
   /* memcpy(&uip_lladdr.addr, &addr.u8, sizeof(linkaddr_t)); */
 
 #if NETSTACK_CONF_WITH_IPV6
   memcpy(&uip_lladdr.addr, &addr.u8, sizeof(linkaddr_t));
-#elif WITH_NODE_ID
-  node_id = get_panaddr_from_eeprom();
-  addr.u8[1] = node_id & 0xff;
-  addr.u8[0] = (node_id & 0xff00) >> 8;
-  PRINTA("Node ID from eeprom: %X\n", node_id);
 #endif
 
   rf230_set_pan_addr(params_get_panid(), params_get_panaddr(), (uint8_t *)&addr.u8);

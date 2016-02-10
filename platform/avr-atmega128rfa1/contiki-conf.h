@@ -184,9 +184,12 @@ typedef unsigned short uip_stats_t;
 
 #if 1 /* No radio cycling */
 
-#define NETSTACK_CONF_MAC         nullmac_driver
-#define NETSTACK_CONF_RDC         sicslowmac_driver
-#define NETSTACK_CONF_FRAMER      framer_802154
+#define NETSTACK_CONF_NETWORK rime_driver
+#define NETSTACK_CONF_MAC     csma_driver
+#define NETSTACK_CONF_RDC     contikimac_driver
+#define NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE 8
+#define NETSTACK_CONF_FRAMER  contikimac_framer
+
 #define NETSTACK_CONF_RADIO       rf230_driver
 #define CHANNEL_802_15_4          26
 /* AUTOACK receive mode gives better rssi measurements, even if ACK is never requested */

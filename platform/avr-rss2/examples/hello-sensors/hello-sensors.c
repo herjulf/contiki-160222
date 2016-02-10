@@ -58,12 +58,36 @@ AUTOSTART_PROCESSES(&hello_sensors_process);
 
 static struct etimer et;
 
+static void
+read_values(void)
+{
+  char serial[16];
+
+  int i;
+ 
+ /* Read out mote unique 128 bit ID */
+  i2c_at24mac_read((char *) &serial, 0);
+  printf("128_bit_ID=");
+  for(i=0; i < 15; i++)
+    printf("%02x", serial[i]);
+  printf("%02x\n", serial[15]);
+  printf("T=%-5.2f", ((double) temp_sensor.value(0)/100.));
+  printf(" V_MCU=%-3.1f", ((double) battery_sensor.value(0))/1000.);
+  printf(" V_IN=%-4.2f", adc_read_v_in());
+  printf(" V_AD1=%-4.2f", adc_read_a1());
+  printf(" V_AD2=%-4.2f", adc_read_a2());
+  printf(" T_MCU=%-4.1f", ((double) temp_mcu_sensor.value(0)/10.));
+  printf(" LIGHT=%-d", light_sensor.value(0));
+  printf(" PULSE_0=%-d", pulse_sensor.value(0));
+  printf(" PULSE_1=%-d", pulse_sensor.value(1));
+#ifdef CO2
+  printf(" CO2=%-d", co2_sa_kxx_sensor.value( CO2_SA_KXX_CO2));
+#endif
+  printf("\n");
+}
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(hello_sensors_process, ev, data)
 {
-  char serial[16];
-  int i;
-
   PROCESS_BEGIN();
 
   SENSORS_ACTIVATE(temp_sensor);
@@ -83,32 +107,13 @@ PROCESS_THREAD(hello_sensors_process, ev, data)
    * Gives a chance to trigger some pulses
    */
 
-  printf("Sleep...\n");
-  etimer_set(&et, CLOCK_SECOND * 4);
-  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
-  etimer_reset(&et);
+    etimer_set(&et, CLOCK_SECOND * 5);
+  while(1) {
+    PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
+    read_values();
+    etimer_reset(&et);
+  }
 
-  /* Read out mote unique 128 bit ID */
-  i2c_at24mac_read((char *) &serial, 0);
- 
-  printf("Reading sensors---------\n");
-
-  printf("128_bit_ID=");
-  for(i=0; i < 15; i++)
-    printf("%02x", serial[i]);
-  printf("%02x\n", serial[15]);
-  printf("T=%-5.2f\n", ((double) temp_sensor.value(0)/100.));
-  printf("V_MCU=%-3.1f\n", ((double) battery_sensor.value(0))/1000.);
-  printf("V_IN=%-4.2f\n", adc_read_v_in());
-  printf("V_AD1=%-4.2f\n", adc_read_a1());
-  printf("V_AD2=%-4.2f\n", adc_read_a2());
-  printf("T_MCU=%-4.1f\n", ((double) temp_mcu_sensor.value(0)/10.));
-  printf("LIGHT=%-d\n", light_sensor.value(0));
-  printf("PULSE_0=%-d\n", pulse_sensor.value(0));
-  printf("PULSE_1=%-d\n", pulse_sensor.value(1));
-#ifdef CO2
-  printf("CO2=%-d\n", co2_sa_kxx_sensor.value(value);
-#endif
   PROCESS_END();
 }
 /*---------------------------------------------------------------------------*/

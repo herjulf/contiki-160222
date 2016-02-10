@@ -52,6 +52,7 @@
 
 void i2c_init(uint32_t speed);
 uint8_t i2c_start(uint8_t addr);
+void i2c_start_wait(uint8_t addr);
 void i2c_stop(void);
 void i2c_write(uint8_t u8data);
 uint8_t i2c_readAck(void);

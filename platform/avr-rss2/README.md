@@ -30,7 +30,9 @@ Boards Features
 * PCB formfactor for cheap project box G.40X IP54
 * Power/current:
   ** RX ~10mA (Full RPC AtMegaXXRFR2). 
-  ** Sleep ~15uA
+  ** Sleep ~45uA @ 16MHz XTAL
+  ** Sleep ~15uA @  8MHz using internal oscillator
+
 * Preprogammed bootloader. 
 * CE certified by test institute.
 
@@ -38,7 +40,8 @@ UART
 ----
 The board has one UART via the 6-pin TTL-USB adapter, The recommended
 baudrate is 38400 bps. This speed gives the lowest error with respect 
-of the used clock frequency used internally.
+of the used clock frequency used internally. A possible hi-speed is 
+250000 bps wich gives 0% Error with 16MHz clock. 
 
 Port Features
 --------------
