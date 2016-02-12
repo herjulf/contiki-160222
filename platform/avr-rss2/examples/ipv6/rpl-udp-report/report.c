@@ -67,6 +67,8 @@
 static struct uip_udp_conn *client_conn;
 static uip_ipaddr_t server_ipaddr;
 
+extern uint16_t node_id; /* Can be set by cooja */
+
 /*---------------------------------------------------------------------------*/
 PROCESS(udp_client_process, "UDP client process");
 AUTOSTART_PROCESSES(&udp_client_process);
@@ -94,11 +96,18 @@ send_packet(void *ptr)
 
   len += snprintf((char *) &buf[len], sizeof(buf), "&: ");
   len += snprintf((char *) &buf[len], sizeof(buf), "V_MCU=%-d ", battery_sensor.value(0));
-  len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", temp_mcu_sensor.value(0));
-  len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", light_sensor.value(0));
+
+  /* 
+   * Cooja needs to set a node_id. So we can skip sensor reading in case of simulation.
+   */
+
+  if(node_id == 0) {
+    len += snprintf((char *) &buf[len], sizeof(buf), "T_MCU=%-d ", temp_mcu_sensor.value(0));
+    len += snprintf((char *) &buf[len], sizeof(buf), "LIGHT=%-d ", light_sensor.value(0));
 #ifdef CO2
-  len += snprintf((char *) &buf[len], sizeof(buf), "CO2=%-d ", co2_sa_kxx_sensor.value(value));
+    len += snprintf((char *) &buf[len], sizeof(buf), "CO2=%-d ", co2_sa_kxx_sensor.value(value));
 #endif
+  }
   PRINTF("TX %d to %d %s\n",
          server_ipaddr.u8[sizeof(server_ipaddr.u8) - 1], seq_id, buf);
 
